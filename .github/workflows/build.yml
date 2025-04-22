@@ -23,9 +23,9 @@ jobs:
 
             - name: Install dependencies
               run: |
-                npm install && npm install --os=linux --cpu=x64 sharp
-                npm install --cpu=x64 --os=linux --libc=glibc sharp
-                npm install --cpu=x64 --os=linux --libc=musl sharp
+                npm install && npm install -g --os=linux --cpu=x64 sharp
+                npm install -g --cpu=x64 --os=linux --libc=glibc sharp
+                npm install -g --cpu=x64 --os=linux --libc=musl sharp
 
             - name: Clean Cache
               run: rm -rf node_modules && npm install
