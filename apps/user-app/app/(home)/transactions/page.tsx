@@ -4,25 +4,25 @@ import { auth } from "@/lib/auth";
 import { Card } from "@repo/ui/card";
 import { redirect } from "next/navigation";
 
-import * as db from '@repo/db/index.ts';
-import { $Enums } from "@repo/db/index.ts";
+// import * as db from '@repo/db/index.ts';
+// import { $Enums } from ".prisma/client";
 
-type LocalTransaction = {
-    id: number;
-    amount: number;
-    status: $Enums.OnRampTransactionStatus;
-    startTime: Date;
-    fromId: string;
-    toId: string;
-    toUser: {
-        number: string;
-        name: string | null;
-    };
-    fromUser: {
-        number: string;
-        name: string | null;
-    };
-}
+// type LocalTransaction = {
+//     id: number;
+//     amount: number;
+//     status: $Enums.OnRampTransactionStatus;
+//     startTime: Date;
+//     fromId: string;
+//     toId: string;
+//     toUser: {
+//         number: string;
+//         name: string | null;
+//     };
+//     fromUser: {
+//         number: string;
+//         name: string | null;
+//     };
+// }
 
 
 const Transactions = async ({
