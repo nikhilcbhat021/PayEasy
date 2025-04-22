@@ -1,5 +1,5 @@
 import { OnRampTransactionStatus } from ".prisma/client"
-import type { OnRampTransaction, P2pTransaction } from '.prisma/client'
+import type { OnRampTransaction, P2pTransaction } from '@prisma/client'
 
 
 /* FrontEnd Types -- Start */

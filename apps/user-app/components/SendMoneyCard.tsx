@@ -6,7 +6,7 @@ import { TextInput } from '@repo/ui/text-input'
 import p2pTransfer from '@/lib/actions/p2pTransfer'
 import { redirect } from 'next/navigation'
 import React, { FormEvent, FormEventHandler, useState } from 'react'
-import { OnRampTransactionStatus } from '.prisma/client'
+import { OnRampTransactionStatus } from '@prisma/client'
 
 import { enqueueSnackbar, closeSnackbar } from 'notistack'
 

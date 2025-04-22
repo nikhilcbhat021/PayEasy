@@ -5,7 +5,7 @@ import { Card } from "@repo/ui/card";
 import { redirect } from "next/navigation";
 
 // import * as db from '@repo/db/index.ts';
-// import { $Enums } from ".prisma/client";
+// import { $Enums } from "@prisma/client";
 
 // type LocalTransaction = {
 //     id: number;
