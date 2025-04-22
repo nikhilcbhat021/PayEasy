@@ -1,6 +1,6 @@
 import Image from 'next/image';
-// import AppBarIcon from '../assets/appbar-icon.png';
-import HeroImg from '../../../apps/user-app/public/home-hero.webp';
+import HeroImg from '../assets/home-hero.png';
+// import HeroImg from '../../../apps/user-app/public/home-hero.webp';
 
 const Hero = () => {
   return (
