@@ -11,6 +11,7 @@ const Transfer = async ({
     const params_data = await params;
     console.log(params_data);
 
+    console.log('Update to check if ci works');
     const outline = false;
 
     return (
