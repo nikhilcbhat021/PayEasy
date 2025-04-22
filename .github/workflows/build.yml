@@ -16,14 +16,18 @@ jobs:
               uses: actions/setup-node@v4
               with:
                 node-version: '23' # Ensure the correct version is specified
-        
-            - name: Install dependencies
-              run: npm install
+            
+            - name: Install system dependencies for sharp
+              run: |
+                sudo apt-get update
+                sudo apt-get install -y libvips-dev
 
             - name: Install Sharp Manually
               run: |
-                npm uninstall sharp
-                npm install sharp@latest
+                npm install sharp
+            
+            - name: Install dependencies
+              run: npm install
 
             - name: Build Project
               run: npm run build
