@@ -58,7 +58,7 @@ export const ViewTxnsCard = async ({
             <Card label="Recent Transactions" >
                 <div className="flex flex-col items-stretch justify-start divide-y divide-stone-300">
                 {
-                    allTransactions.map(txn => 
+                    allTransactions.map((txn:Transaction) => 
                         <div key={txn.id} className="flex justify-between items-center gap-1 p-2 text-sm">
                             {/* Txn has date, state, amount, sent/received */}
                             <div className="flex justify-start items-center gap-4">
