@@ -38,8 +38,8 @@ jobs:
                node -e "console.log('nikhil')"
                node -e "console.log(require('sharp').version)"
 
-            # - name: Generate Prisma Client
-            #   run: npx turbo db:generate
+            - name: Generate Prisma Client
+              run: npx turbo db:generate
 
             - name: Build Project
               env:
