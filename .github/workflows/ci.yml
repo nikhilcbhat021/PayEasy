@@ -1,0 +1,25 @@
+name: Build and Deploy on ec2 for every commit.
+
+on: 
+    pull_request: 
+        branches: [ $default-branch ]
+
+jobs:
+    build:
+        runs-on: ubuntu-latest
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v4
+            
+            - name: Install dependencies
+              run: npm install -y
+
+            - name: Generate DB Client
+              run: |
+                cd packages/db
+                npm run db:generate
+
+            - name: Build Project
+              run: |
+
+            

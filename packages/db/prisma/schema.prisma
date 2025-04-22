@@ -1,0 +1,78 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model User {
+    id                   String              @id @default(uuid())
+    email                String              @unique
+    password             String
+    name                 String?
+    number               String              @unique
+    createdAt            DateTime            @default(now())
+    onRampTransactions   OnRampTransaction[]
+    sentTransactions     P2pTransaction[]    @relation("sentTransactions")
+    receivedTransactions P2pTransaction[]    @relation("receivedTransactions")
+    balance              Balance?
+}
+
+model OnRampTransaction {
+    id        Int                     @id @default(autoincrement())
+    provider  String
+    amount    Int
+    status    OnRampTransactionStatus
+    token     String
+    startTime DateTime
+    userId    String
+    user      User                    @relation(fields: [userId], references: [id])
+}
+
+model P2pTransaction {
+    id        Int                     @id @default(autoincrement())
+    amount    Int
+    status    OnRampTransactionStatus
+    token     String?
+    startTime DateTime
+    fromId    String
+    toId      String
+    toUser    User                    @relation(name: "sentTransactions", fields: [toId], references: [id])
+    fromUser  User                    @relation(name: "receivedTransactions", fields: [fromId], references: [id])
+}
+
+model Balance {
+    id     Int    @id @default(autoincrement())
+    userId String @unique
+    amount Int
+    locked Int
+    user   User   @relation(fields: [userId], references: [id])
+}
+
+model Merchant {
+    id        Int      @id @default(autoincrement())
+    email     String   @unique
+    name      String?
+    auth_type AuthType
+}
+
+
+enum AuthType {
+    Google
+    Github
+    Discord
+}
+
+enum OnRampTransactionStatus {
+    Processing
+    Success
+    Failed
+}
