@@ -7,6 +7,6 @@
         "@/components/*": ["../../apps/user-app/components/*"]
     }
   },
-  "include": ["src"],
+  "include": ["src", "types"],
   "exclude": ["node_modules", "dist"]
 }
