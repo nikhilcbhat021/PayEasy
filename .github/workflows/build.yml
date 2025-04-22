@@ -15,19 +15,24 @@ jobs:
             - name: Install node
               uses: actions/setup-node@v4
               with:
-                node-version: '23' # Ensure the correct version is specified
+                node-version: '20' # Ensure the correct version is specified
             
             - name: Install system dependencies for sharp
-              run: |
-                sudo apt-get update
-                sudo apt-get install -y libvips-dev
+              run: sudo apt-get update && sudo apt-get install -y libvips
+
+
+            - name: Install dependencies
+              run: npm install
 
             - name: Install Sharp Manually
               run: |
                 npm install sharp
-            
-            - name: Install dependencies
-              run: npm install
+                export NEXT_SHARP_PATH ../../node_modules/sharp
+
+            - name: Rebuild sharp for current OS
+              run: npm rebuild sharp
+            # - name: Generate Prisma Client
+            #   run: npx turbo db:generate
 
             - name: Build Project
               run: npm run build
