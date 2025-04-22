@@ -11,6 +11,8 @@ const Transfer = async ({
     const params_data = await params;
     console.log(params_data);
 
+    console.log('check ci');
+
     const outline = false;
 
     return (
