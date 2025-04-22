@@ -20,5 +20,10 @@ jobs:
             - name: Install dependencies
               run: npm install
 
+            - name: Install Sharp Manually
+              run: |
+                npm uninstall sharp
+                npm install sharp@latest
+
             - name: Build Project
               run: npm run build
