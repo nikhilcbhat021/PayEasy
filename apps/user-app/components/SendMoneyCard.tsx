@@ -6,7 +6,7 @@ import { TextInput } from '@repo/ui/text-input'
 import p2pTransfer from '@/lib/actions/p2pTransfer'
 import { redirect } from 'next/navigation'
 import React, { FormEvent, FormEventHandler, useState } from 'react'
-import { $Enums, OnRampTransactionStatus } from '.prisma/client'
+import { OnRampTransactionStatus } from '.prisma/client'
 
 import { enqueueSnackbar, closeSnackbar } from 'notistack'
 
@@ -44,7 +44,7 @@ const SendMoneyCard = () => {
     )
 }
 
-const formAction = async (e:FormEvent<HTMLFormElement>, setDisableSubmit:React.Dispatch<React.SetStateAction<boolean>>, setTxnStatus:React.Dispatch<React.SetStateAction<$Enums.OnRampTransactionStatus>>) => {
+const formAction = async (e:FormEvent<HTMLFormElement>, setDisableSubmit:React.Dispatch<React.SetStateAction<boolean>>, setTxnStatus:React.Dispatch<React.SetStateAction<OnRampTransactionStatus>>) => {
 
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
