@@ -2,7 +2,8 @@ name: Build and Deploy on ec2 for every commit.
 
 on: 
     pull_request: 
-        branches: [ $default-branch ]
+        branches:
+          - main # Replace 'main' with your actual default branch name
 
 jobs:
     build:
@@ -11,19 +12,13 @@ jobs:
             - name: Checkout repo
               uses: actions/checkout@v4
             
-            - name: Install node.
+            - name: Install node
               uses: actions/setup-node@v4
               with:
-                node-version: '>=20'
- 
+                node-version: '20' # Ensure the correct version is specified
+        
             - name: Install dependencies
-              run: npm install -y
-
-            # - name: Generate DB Client
-            #   run: |
-            #     cd ../../packages/db
-            #     npm run db:generate
+              run: npm install
 
             - name: Build Project
               run: npm run build
-            
