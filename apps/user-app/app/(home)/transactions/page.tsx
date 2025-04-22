@@ -4,6 +4,26 @@ import { auth } from "@/lib/auth";
 import { Card } from "@repo/ui/card";
 import { redirect } from "next/navigation";
 
+import * as db from '@repo/db/index.ts';
+
+type LocalTransaction = {
+    id: number;
+    amount: number;
+    status: db.$Enums.OnRampTransactionStatus;
+    startTime: Date;
+    fromId: string;
+    toId: string;
+    toUser: {
+        number: string;
+        name: string | null;
+    };
+    fromUser: {
+        number: string;
+        name: string | null;
+    };
+}
+
+
 const Transactions = async ({
     params
 }: {
@@ -22,7 +42,7 @@ const Transactions = async ({
 
 
     // Data Manipulation... To include name and number of recepient(debit) or sender(credit)
-    const allTransactions = allRawTransactions.map(txn => {
+    const allTransactions = allRawTransactions.map((txn:any) => {
         return {
             ...txn,
             "name": 'toId' in txn && (
