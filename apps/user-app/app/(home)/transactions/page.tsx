@@ -5,11 +5,12 @@ import { Card } from "@repo/ui/card";
 import { redirect } from "next/navigation";
 
 import * as db from '@repo/db/index.ts';
+import { $Enums } from "@repo/db/index.ts";
 
 type LocalTransaction = {
     id: number;
     amount: number;
-    status: db.$Enums.OnRampTransactionStatus;
+    status: $Enums.OnRampTransactionStatus;
     startTime: Date;
     fromId: string;
     toId: string;
