@@ -24,11 +24,16 @@ jobs:
             - name: Install dependencies
               run: npm install
 
+            - name: Clean Cache
+              run: rm -rf node_modules && npm install
+
             - name: Rebuild sharp for current OS
               run: npm rebuild sharp
 
             - name: Verify sharp installation
-              run: node -e "console.log(require('sharp').version)"
+              run: |
+               node -e "console.log('nikhil')"
+               node -e "console.log(require('sharp').version)"
 
             # - name: Generate Prisma Client
             #   run: npx turbo db:generate
