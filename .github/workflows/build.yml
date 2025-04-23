@@ -2,7 +2,8 @@ name: Build and Deploy on ec2 for every commit.
 
 on: 
     pull_request: 
-        branches: [ $default-branch ] # Replace 'main' with your actual default branch name
+        branches: 
+            - main  # Replace 'main' with your actual default branch name
 
 jobs:
     build:
