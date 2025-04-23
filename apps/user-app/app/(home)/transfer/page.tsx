@@ -13,7 +13,7 @@ const Transfer = async ({
 
     const outline = false;
 
-    console.log('check if ci is working or not');
+    console.log('check if ci is working or not'2);
 
     return (
         <Card label="Send Money" labelStyles='font-semibold text-purple-700 text-4xl mb-12' no_padding className="bg-stone-200 divide-y-0">
