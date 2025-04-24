@@ -12,14 +12,16 @@ dev_branch=dev
 
 echo '------------------------------------------'
 
-echo $test_branch
-echo $dev_branch
-
+echo test branch - "$test_branch"
+echo dev branch - "$dev_branch"
 
 curr_branch=$(git rev-parse --abbrev-ref HEAD)
 all_branches=$(git branch)
+branches=$(git branch --format="%(refname:short)")
 
-echo $curr_branch , $all_branches
+echo curr branch - "$curr_branch"
+echo all branches - "$all_branches"
+echo all formatted branches = "$branches"
 read name
 # reset the curr branch to HEAD->main
 git reset --hard origin/"$curr_branch"
