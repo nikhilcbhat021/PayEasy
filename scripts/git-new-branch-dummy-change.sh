@@ -18,6 +18,7 @@ echo dev branch - "$dev_branch"
 curr_branch=$(git rev-parse --abbrev-ref HEAD)
 all_branches=$(git branch)
 branches=$(git branch --format="%(refname:short)")
+remote_branches=$(git branch -r)
 
 echo curr branch - "$curr_branch"
 echo all branches - "$all_branches"
@@ -45,6 +46,10 @@ if  grep -q $test_branch <<< "$branches"; then
     echo "$test_branch" found... deleting it
     git branch -D $test_branch
     git branch
+
+    if  greqp -q "origin/$test_branch" <<< "$remote_branches"; then
+        git branch -rd $remote_branches
+    fi
 else
     echo "$test_branch" not found...
 fi
