@@ -47,7 +47,7 @@ if  grep -q $test_branch <<< "$branches"; then
     git branch -D $test_branch
     git branch
 
-    if  greqp -q "origin/$test_branch" <<< "$remote_branches"; then
+    if  grep -q "origin/$test_branch" <<< "$remote_branches"; then
         git branch -rd $remote_branches
     fi
 else
