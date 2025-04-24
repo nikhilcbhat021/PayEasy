@@ -32,7 +32,7 @@ if  [[ "$curr_branch" != "main" && "$curr_branch" != "dev" ]]; then
     git checkout $dev_branch
     echo "$curr_branch" is not main/dev
 else
-    echo "$curr_branch" is either main/dev
+    echo "$curr_branch" is either main/devs
     # git branch -D $curr_branch
 fi
 
