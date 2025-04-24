@@ -52,6 +52,7 @@ fi
 # create the dev branch
 # git checkout -b $dev_branch
 git checkout -b $test_branch
+git push origin $test_branch
 echo '------------------------------------------'
 # should display atleast 3 branches including main.
 git branch
