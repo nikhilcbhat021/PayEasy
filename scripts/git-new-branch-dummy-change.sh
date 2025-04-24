@@ -24,12 +24,15 @@ echo all branches - "$all_branches"
 echo all formatted branches = "$branches"
 read name
 # reset the curr branch to HEAD->main
-git reset --hard origin/"$curr_branch"
+# git reset --hard origin/"$curr_branch"
 git log -n 4
 
 read name
 if  [[ "$curr_branch" != "main" && "$curr_branch" != "dev" ]]; then
     git checkout $dev_branch
+    echo "$curr_branch" is not main/dev
+else
+    echo "$curr_branch" is either main/dev
     # git branch -D $curr_branch
 fi
 
@@ -38,9 +41,12 @@ fi
 # intermediate changes permanently.
 
 ### git branch -D $dev_branch
-if [[ "$test_branch" == *"$all_branches"* ]]; then
-    echo "$test_branch" found...
+if  grep -q $test_branch <<< "$branches"; then
+    echo "$test_branch" found... deleting it
     git branch -D $test_branch
+    git branch
+else
+    echo "$test_branch" not found...
 fi
 
 # create the dev branch
