@@ -29,7 +29,7 @@ git log -n 4
 
 read name
 if  [[ "$curr_branch" != "main" && "$curr_branch" != "dev" ]]; then
-    git checkout main
+    git checkout $dev_branch
     # git branch -D $curr_branch
 fi
 
@@ -38,12 +38,13 @@ fi
 # intermediate changes permanently.
 
 ### git branch -D $dev_branch
-if [[ "$test_branch" == *"$allbranches"* ]]; then
+if [[ "$test_branch" == *"$all_branches"* ]]; then
+    echo "$test_branch" found...
     git branch -D $test_branch
 fi
 
 # create the dev branch
-git checkout -b $dev_branch
+# git checkout -b $dev_branch
 git checkout -b $test_branch
 echo '------------------------------------------'
 # should display atleast 3 branches including main.
