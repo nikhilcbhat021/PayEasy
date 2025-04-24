@@ -38,7 +38,7 @@ fi
 # intermediate changes permanently.
 
 ### git branch -D $dev_branch
-if [[ "$test_branch" in "$allbranches" ]]; then
+if [[ "$test_branch" == *"$allbranches"* ]]; then
     git branch -D $test_branch
 fi
 
