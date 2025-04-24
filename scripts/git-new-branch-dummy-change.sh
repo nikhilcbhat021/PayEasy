@@ -48,7 +48,7 @@ if  grep -q $test_branch <<< "$branches"; then
     git branch
 
     if  grep -q $test_branch <<< "$remote_branches"; then
-        git branch -rd $remote_branches
+        git push origin --delete "$test_branch"
     fi
 else
     echo "$test_branch" not found...
