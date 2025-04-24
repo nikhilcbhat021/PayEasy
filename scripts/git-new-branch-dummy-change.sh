@@ -2,7 +2,7 @@
 set -e
 
 echo '------------------------------------------'
-test_branch=24_5__ci_test
+test_branch=$1
 
 # instead of cluttering the main branch, make all necessary intermediate changes
 # to the dev branch, once all bugs are cleared, raise a PR from dev_branch to main, having 
