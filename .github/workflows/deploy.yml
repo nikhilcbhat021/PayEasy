@@ -29,7 +29,7 @@ jobs:
                 name: Build and Push Docker
                 uses: docker/build-push-action@v6
                 with:
-                    context: ./docker
+                    context: ${{ github.workspace }}/docker
                     push: true
                     file: ./docker/Dockerfile.userapp
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_REPO_NAME}}:latest
