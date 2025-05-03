@@ -19,8 +19,9 @@
             "@/components/*": ["./components/*"],
             "@/css/*": ["../../css/*"]
         },
+        "allowImportingTsExtensions": true
     },
     "exclude": [
         "node_modules"
-    ],
+    ]
 }
