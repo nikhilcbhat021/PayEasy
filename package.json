@@ -7,7 +7,7 @@
     "lint": "turbo run lint",
     "db:generate": "cd ./packages/db && npx prisma generate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start-user-app": "cd ./apps/user-app && npm run dev",
+    "start-user-app": "turbo run build && cd ./apps/user-app && npm run start",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {
@@ -22,5 +22,8 @@
   "workspaces": [
     "apps/*",
     "packages/*"
-  ]
+  ],
+  "dependencies": {
+    "tailwindcss": "^4.1.5"
+  }
 }

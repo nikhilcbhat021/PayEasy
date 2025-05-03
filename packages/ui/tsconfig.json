@@ -6,7 +6,8 @@
     "paths": {
         "@/lib/*": ["../../apps/user-app/lib/*"],
         "@/components/*": ["../../apps/user-app/components/*"]
-    }
+    },
+    "allowImportingTsExtensions": true
   },
   "include": ["src", "types"],
   "exclude": ["node_modules", "dist"]
