@@ -55,6 +55,8 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
     }
 
     let txnId = { id: -1 }
+
+
     try {
         txnId = await db.prismaClient.p2pTransaction.create({
             data: {
@@ -121,6 +123,9 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
         })
 
         return txnId
+    } catch (error) {
+        console.log((error as Error).message);
+        throw new Error((error as Error).message);
     } finally {
         if (txnId.id !== -1) {
             await db.prismaClient.p2pTransaction.update({
