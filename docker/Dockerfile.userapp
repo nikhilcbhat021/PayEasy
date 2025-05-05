@@ -4,14 +4,15 @@ WORKDIR /usr/src/app
 
 COPY package.json package-lock.json turbo.json ./
 
-COPY apps ./apps
-COPY packages ./packages
-
 RUN npm install -y
+
+COPY apps/user-app ./apps/user-app
+COPY packages ./packages
 
 RUN npm run db:generate
 
-RUN cd ./apps/user-app && npm run build
+RUN npm run build
+
+EXPOSE 8080
 
 CMD ["npm", "run", "start-user-app"]
-

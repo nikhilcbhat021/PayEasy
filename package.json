@@ -8,6 +8,8 @@
     "db:generate": "cd ./packages/db && npx prisma generate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
     "start-user-app": "turbo run build && cd ./apps/user-app && npm run start",
+    "start-webhook-server": "turbo run build && cd ./apps/bank-webhook && npm run start",
+    "start-all-apps": "npm run start-user-app && npm run start-webhook-server",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {

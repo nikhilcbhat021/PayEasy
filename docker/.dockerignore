@@ -1,0 +1,11 @@
+# Dependencies
+node_modules
+
+# Turbo
+.turbo
+
+# Build Outputs
+.next/
+out/
+build
+dist
