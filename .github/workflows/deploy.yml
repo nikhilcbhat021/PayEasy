@@ -39,5 +39,15 @@ jobs:
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_REPO_NAME}}:latest
 
             -
+                name: Build and Push Backend_Webhook Docker
+                uses: docker/build-push-action@v6
+                with:
+                    context: .
+                    file: ./docker/Dockerfile.backend_webhook
+                    push: true
+                    tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+            -
                 name: Verify if push is successfull
-                run: docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPO_NAME }}:latest
+                run: |
+                    docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPO_NAME }}:latest
+                    docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest

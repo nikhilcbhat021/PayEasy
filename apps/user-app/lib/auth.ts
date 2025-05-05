@@ -8,6 +8,7 @@ import GitHub from "next-auth/providers/github";
 import Google from "next-auth/providers/google";
 
 import { GoogleProfile } from "next-auth/providers/google";
+import { GitHubProfile } from "next-auth/providers/github";
 import { randomUUID } from "crypto";
 
 export const authOptions:NextAuthConfig = {
@@ -73,43 +74,45 @@ export const authOptions:NextAuthConfig = {
                 }
             }
         }),
-        GitHub({
-            // clientId: process.env.AUTH_GITHUB_ID,
-            // clientSecret: process.env.AUTH_GITHUB_SECRET,
-            async profile(profile) {
-                console.error("------------------")
-                console.error(profile);
-                console.error("------------------")
-                return {
-                    ...profile,
-                    id: profile.id.toString(), // Convert id to string
-                    provider: profile.type,
-                    number: Number(profile.number) || 9113288329
-                }
-            }
-        }),
-        Google({
-            clientId: process.env.CUSTOM_NAME__AUTH_GOOGLE_ID,
-            clientSecret: process.env.CUSTOM_NAME__AUTH_GOOGLE_SECRET,
+        // GitHub({
+        //     clientId: process.env.AUTH_GITHUB_ID,
+        //     clientSecret: process.env.AUTH_GITHUB_SECRET,
+        //     async profile(profile:GitHubProfile) {
+        //         console.error("------------------")
+        //         console.error(profile);
+        //         console.error("------------------")
+        //         return {
+        //             ...profile,
+        //             id: profile.id.toString(), // Convert id to string
+        //             provider: profile.type,
+        //             number: Number(profile.number) || 9113288329
+        //         }
+        //     }
+        // }),
+        // Google({
+        //     clientId: process.env.CUSTOM_NAME__AUTH_GOOGLE_ID,
+        //     clientSecret: process.env.CUSTOM_NAME__AUTH_GOOGLE_SECRET,
 
-            // async profile(profile) {
-            //     console.error("------------------")
-            //     console.error(profile.sub);
-            //     console.error("------------------")
-            //     return {
-            //         ...profile,
-            //         id: profile.sub.toString(), // Convert id to string
-            //         provider: "User",
-            //         number: Number(profile?.number) || 9113288329
-            //     }
-            // }
-        })
+        //     async profile(profile) {
+        //         console.error("------------------")
+        //         console.error(profile.sub);
+        //         console.error("------------------")
+        //         return {
+        //             ...profile,
+        //             id: profile.sub.toString(), // Convert id to string
+        //             provider: "User",
+        //             number: Number(profile?.number) || 9113288329
+        //         }
+        //     }
+        // })
     ],
     secret: process.env.JWT_SECRET,
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         jwt({ token, user }) {
             if (user) {
+                // token.email = user.email;
+                user.email = user.email ?? undefined;
                 token.number = Number(user.number);
                 token.id = user.id;
                 token.profile = user?.provider;
@@ -131,15 +134,18 @@ export const authOptions:NextAuthConfig = {
                 session.user.number = Number(token.number);
             }
             
-            return {
+            const ret = {
                 ...session,
                 user: {
                     ...session.user,
+                    email: token.email ?? undefined,
                     id: token.sub as string,
                     number: token.number as number,
                     provider: token.provider as string
                 }
             }
+
+            return ret;
         },
     }
 }
