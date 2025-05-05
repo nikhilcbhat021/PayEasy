@@ -14,7 +14,12 @@ const Transfer = async ({
     const outline = false;
 
     return (
-        <Card label="Send Money" labelStyles='font-semibold text-purple-700 text-4xl mb-12' no_padding className="bg-stone-200 divide-y-0">
+        <Card 
+            label="Send Money" 
+            labelStyles='font-semibold text-purple-700 text-4xl mb-12' 
+            // no_padding 
+            className="bg-stone-200 divide-y-0"
+        >
             <div className="h-full flex flex-col justify-start mt-10 items-center">
                 <div id="sendMoney" 
                     className={` w-[40%]
