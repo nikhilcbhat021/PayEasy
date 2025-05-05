@@ -57,22 +57,25 @@ jobs:
                     key: ${{ secrets.SSH_KEY }}
                     script: |
 
+                        ### We are now, inside the ec2 machine and not inside the github azure machine, where the workflow is running.
+                        ### If the EC2 Instance doesn't have docker installed, the below commands will fail.
+                        
                         # pull both images from dock-hub
-                        docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
-                        docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
                         # stop the running docks (user_app, webhook)
-                        docker stop user-app || true
-                        docker stop webhook-backend || true
+                        sudo docker stop user-app || true
+                        sudo docker stop webhook-backend || true
                         # docker stop  || true
 
                         # rm the running docks (user_app, webhook) || true
                             # the above 2 could have been replaced with kill, if we can get the sha-id of the container.
-                        docker rm user-app || true
-                        docker rm webhook-backend || true
+                        sudo docker rm user-app || true
+                        sudo docker rm webhook-backend || true
 
                         # docker run -d --name user_app -p 8080:8080 ncb021/payment-app:latest ... (-e if any)
-                        docker run -d --name webhook-backend -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+                        sudo docker run -d --name webhook-backend -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
-                        docker run -d --name user-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+                        sudo docker run -d --name user-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
