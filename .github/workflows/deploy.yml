@@ -25,18 +25,19 @@ jobs:
                 with:
                     username: ${{ secrets.DOCKER_USERNAME }}
                     password: ${{ secrets.DOCKER_PASSWORD }}
+
             -
                 name: Setup Docker Buildx
                 uses: docker/setup-buildx-action@v3
             
             -
-                name: Build and Push Docker
+                name: Build and Push User_App Docker
                 uses: docker/build-push-action@v6
                 with:
                     context: .
                     file: ./docker/Dockerfile.userapp
                     push: true
-                    tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_REPO_NAME}}:latest
+                    tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_USER_APP}}:latest
 
             -
                 name: Build and Push Backend_Webhook Docker
@@ -46,8 +47,37 @@ jobs:
                     file: ./docker/Dockerfile.backend_webhook
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+
             -
                 name: Verify if push is successfull
                 run: |
-                    docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_REPO_NAME }}:latest
+
+                    docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
                     docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+
+            -
+                name: Pull latest image in EC2 and re-deploy
+                uses: appleboy/ssh-action@master
+                with:
+                    host: ${{ secrets.SSH_HOST }}
+                    username: ${{ secrets.SSH_USERNAME }}
+                    key: ${{ secrets.SSH_KEY }}
+                    script: |
+
+                        # pull both images from dock-hub
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+
+                        # stop the running docks (user_app, webhook)
+                        sudo docker stop user-app webhook-backend || true
+                        # sudo docker stop  || true
+
+                        # rm the running docks (user_app, webhook) || true
+                            # the above 2 could have been replaced with kill, if we can get the sha-id of the container.
+                        sudo docker rm user-app webhook-backend || true
+
+                        # docker run -d --name user_app -p 8080:8080 ncb021/payment-app:latest ... (-e if any)
+                        sudo docker run -d --name webhook-backend -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+
+                        # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
+                        sudo docker run -d --name user-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
