@@ -1,18 +1,66 @@
-FROM node:22.15.0-alpine3.20
+# Base image
+FROM node:22.15.0-alpine3.20 AS base
+RUN apk update; \
+apk add --no-cache libc6-compat openssl;
+WORKDIR /app
 
-WORKDIR /usr/src/app
+# ARG DATABASE_URL
+# ENV DATABASE_URL=$DATABASE_URL
 
-COPY package.json package-lock.json turbo.json ./
+# Stage 1: Install dependencies
+FROM base AS prune
+RUN yarn global add turbo@2.4.4
+COPY . .
+RUN yarn turbo prune user-app --docker
 
-RUN npm install -y
 
-COPY apps/user-app ./apps/user-app
-COPY packages ./packages
+FROM base AS installer
+WORKDIR /app
+# COPY --from=prune /app/out/yarn.lock /app/out/json/ ./
+COPY --from=prune /app/out/json/ .
+RUN yarn install --frozen-lockfile
 
-RUN npm run db:generate
 
-RUN npm run build
+# Stage 2: Build the application
+FROM base AS builder
+WORKDIR /app
+# RUN yarn turbo prune user-app --docker
+# WORKDIR /app/packages/db    --- is not required, as the db:generate should be run from /app.
+COPY --from=installer /app/node_modules ./node_modules
+COPY --from=prune /app/out/full/ ./
+COPY --from=prune /app/apps/user-app/.env ./apps/user-app
+# RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
+RUN npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
+RUN cd /app/apps/user-app && yarn add sharp
+RUN yarn turbo run build --filter=user-app
 
+
+
+# Stage 3: Prepare the final docker img
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+# COPY --from=deps /app/node_modules ./node_modules
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN mkdir .next && chown nextjs:nodejs .next
+USER nextjs
+
+# Copy only necessary files
+# COPY --from=builder  /app/apps/user-app/dist ./apps/user-app/dist
+# COPY --from=builder /app/apps/user-app/package.json ./apps/user-app/package.json
+# COPY --from=deps /app/node_modules ./node_modules
+
+COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.next/static ./apps/user-app/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/public ./apps/user-app/public
+####################### This is not supposed to be done. Environment variables should be sent in at run-time "-e KK=VV" or at build-time with "--build-arg" #######################
+COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.env ./apps/user-app/
 EXPOSE 8080
+ENV NODE_ENV=production
+ENV PORT=8080 
+ENV HOSTNAME="0.0.0.0"
 
-CMD ["npm", "run", "start-user-app"]
+# CMD ["yarn", "start-user-app-prod"]
+CMD [ "node", "apps/user-app/server.js" ]
+# CMD ["npm", "run", "start-user-app", "--workspace=apps/user-app"]

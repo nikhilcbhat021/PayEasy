@@ -106,7 +106,7 @@ export const authOptions:NextAuthConfig = {
         //     }
         // })
     ],
-    secret: process.env.JWT_SECRET,
+    secret: process.env.AUTH_SECRET,
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         jwt({ token, user }) {
@@ -147,7 +147,8 @@ export const authOptions:NextAuthConfig = {
 
             return ret;
         },
-    }
+    },
+    // trustHost: true
 }
 
 const result = NextAuth(authOptions);

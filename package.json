@@ -7,9 +7,10 @@
     "lint": "turbo run lint",
     "db:generate": "cd ./packages/db && npx prisma generate",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "start-user-app": "turbo run build && cd ./apps/user-app && npm run start",
-    "start-webhook-server": "turbo run build && cd ./apps/bank-webhook && npm run start",
-    "start-all-apps": "npm run start-user-app && npm run start-webhook-server",
+    "start-user-app": "cd ./apps/user-app && PORT=8080 yarn start",
+    "start-user-app-prod": "node apps/user-app/server.js",
+    "start-webhook-server": "cd ./apps/bank-webhook && yarn start",
+    "start-all-apps": "yarn start-user-app && yarn start-webhook-server",
     "check-types": "turbo run check-types"
   },
   "devDependencies": {

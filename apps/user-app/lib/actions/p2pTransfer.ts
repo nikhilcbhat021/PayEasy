@@ -54,21 +54,29 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
         throw new Error ('Recepient User not found. Please check the number');
     }
 
-    let txnId = { id: -1 }
+    let txnTracker:{id:number, status:db.OnRampTransactionStatus} = { 
+        id: -1, status: db.OnRampTransactionStatus.Failed 
+    }
 
 
     try {
-        txnId = await db.prismaClient.p2pTransaction.create({
-            data: {
-                amount: amount,
-                startTime: new Date(),
-                status: db.OnRampTransactionStatus.Processing,
-                toId: to_id.id,
-                fromId: from_id as string,
-            }, select: {
-                id: true
-            }
-        })
+        
+        txnTracker = { 
+            "id": await db.prismaClient.p2pTransaction.create({
+                    data: {
+                        amount: amount,
+                        startTime: new Date(),
+                        status: db.OnRampTransactionStatus.Processing,
+                        toId: to_id.id,
+                        fromId: from_id as string,
+                    }, select: {
+                        id: true
+                    }
+                }).then((d) => d.id) ,
+            "status":  db.OnRampTransactionStatus.Processing
+        }
+        
+        
 
         await db.prismaClient.$transaction(async (txn) => {
             await txn.$queryRaw`SELECT * FROM "Balance" WHERE "userId" = ${Number(from_id)} FOR UPDATE`;
@@ -109,7 +117,7 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
 
             await txn.p2pTransaction.update({
                 where: {
-                    id: txnId.id
+                    id: txnTracker.id
                 },
                 data: {
                     status: db.OnRampTransactionStatus.Success,
@@ -117,20 +125,24 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
                     id: true
                 }
             })
+
+            txnTracker.status = db.OnRampTransactionStatus.Success
         }, {
             maxWait: 5000,  //db connection max wait.
             timeout: 20000  //max time till which this txn is valid.
         })
 
-        return txnId
+        console.log("Nikhil", "Transaction Success -- "+txnTracker);
+        return txnTracker
     } catch (error) {
         console.log((error as Error).message);
         throw new Error((error as Error).message);
     } finally {
-        if (txnId.id !== -1) {
+        if (txnTracker.id !== -1 && txnTracker.status !== db.OnRampTransactionStatus.Success) {
+            console.log("Nikhil", "Transaction Failed -- "+txnTracker);
             await db.prismaClient.p2pTransaction.update({
                 where: {
-                    id: txnId.id
+                    id: txnTracker.id
                 },
                 data: {
                     status: db.OnRampTransactionStatus.Failed,
