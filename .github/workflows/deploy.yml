@@ -75,7 +75,7 @@ jobs:
                         sudo docker rm webhook-backend || true
 
                         # docker run -d --name user_app -p 8080:8080 ncb021/payment-app:latest ... (-e if any)
-                        sudo docker run -d --name webhook-backend -p 8081:8081 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+                        sudo docker run -d --name webhook-backend -p 8081:8081 -e DATABASE_URL=${{ secrets.DATABASE_URL }}  ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
                         sudo docker run -d --name user-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest

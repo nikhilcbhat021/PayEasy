@@ -5,7 +5,15 @@ node_modules
 .turbo
 
 # Build Outputs
-.next/
 out/
-build
-dist
+
+./**/dist
+./**/.next
+./**/build
+
+
+.git
+*.log
+*.md
+coverage
+tests
