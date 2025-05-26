@@ -11,7 +11,7 @@ WORKDIR /app
 FROM base AS prune
 RUN yarn global add turbo@2.4.4
 COPY . .
-RUN yarn turbo prune user-app --docker
+RUN npx turbo@2.4.4 prune user-app --docker
 
 
 FROM base AS installer
@@ -24,7 +24,7 @@ RUN yarn install --frozen-lockfile
 # Stage 2: Build the application
 FROM base AS builder
 WORKDIR /app
-# RUN yarn turbo prune user-app --docker
+# RUN npx turbo@2.4.4 prune user-app --docker
 # WORKDIR /app/packages/db    --- is not required, as the db:generate should be run from /app.
 COPY --from=installer /app/node_modules ./node_modules
 COPY --from=prune /app/out/full/ ./
@@ -32,7 +32,7 @@ COPY --from=prune /app/apps/user-app/.env ./apps/user-app
 # RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
 RUN npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
 RUN cd /app/apps/user-app && yarn add sharp
-RUN yarn turbo run build --filter=user-app
+RUN npx turbo@2.4.4 run build --filter=user-app
 
 
 
