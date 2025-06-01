@@ -98,4 +98,4 @@ jobs:
                         sudo docker run -d --name webhook-backend -p ${{secrets.WEB_HOOK_PORT}}:${{secrets.WEB_HOOK_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }}  ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
-                        sudo docker run -d --name user-app -p ${{secrets.FE_PORT}}:${{secrets.FE_PORT}} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+                        sudo docker run -d --name user-app -p ${{secrets.FE_PORT}}:${{secrets.FE_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
