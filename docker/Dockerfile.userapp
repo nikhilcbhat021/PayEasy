@@ -51,6 +51,7 @@ ENV CREDENTIALS=$CREDENTIALS
 ARG DOMAIN_URL
 ENV DOMAIN_URL=$DOMAIN_URL
 
+
 ARG DATABASE_URL
 ENV DATABASE_URL=$DATABASE_URL
 
@@ -77,6 +78,7 @@ COPY --from=installer /app/node_modules ./node_modules
 COPY --from=prune /app/out/full/ ./
 # Below line should be replaced with something else.....
 # COPY --from=prune /app/apps/user-app/.env ./apps/user-app
+
 COPY --from=prune /app/out/yarn.lock ./yarn.lock
 
 # RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
