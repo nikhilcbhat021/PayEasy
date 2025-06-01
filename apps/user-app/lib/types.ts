@@ -62,6 +62,14 @@ export interface IP2pTransaction extends Transaction {
 // We can extract the type directly from Prisma, thus reducing human error.
 export type onramptxntype = OnRampTransaction;     
 export type p2ptnxtype = P2pTransaction;
+
+export enum ErrorCodeMappings {
+    err_input_inv = 'Invalid Inputs',
+    err_auth_inv = 'User not signed in',
+    err_user_nf = 'Recepient User not found. Please check the number',
+    err_txn_self = 'Can\'t send money to yourself',
+    err_user_bal = 'Insufficient Balance'
+}
 /* Transaction Types & Interfaces -- End */
 
 

@@ -3,6 +3,10 @@ FROM node:22.15.0-alpine3.20 AS base
 RUN apk update; \
     apk add --no-cache openssl;
 WORKDIR /app
+
+ARG WEB_HOOK_PORT
+ENV WEB_HOOK_PORT=$WEB_HOOK_PORT
+
 # ARG DATABASE_URL
 # ENV DATABASE_URL=$DATABASE_URL
 
@@ -30,7 +34,7 @@ FROM base AS builder
 WORKDIR /app
 COPY --from=installer /app/node_modules ./node_modules
 COPY --from=prune /app/out/full ./
-COPY --from=prune /app/apps/bank-webhook/.env  ./apps/bank-webhook
+# COPY --from=prune /app/apps/bank-webhook/.env  ./apps/bank-webhook
 COPY --from=prune /app/out/yarn.lock ./yarn.lock
 # RUN yarn add -W prisma@6.5.0
 RUN npx prisma@6.5.0 generate --schema ./packages/db/prisma/schema.prisma
@@ -54,15 +58,15 @@ COPY --from=builder /app/node_modules/.prisma /app/node_modules/.prisma
 COPY --from=builder /app/node_modules/.prisma /node_modules/.prisma
 COPY --from=builder /app/node_modules/prisma /app/node_modules/prisma
 ####################### This is not supposed to be done. Environment variables should be sent in at run-time "-e KK=VV" or at build-time with "--build-arg" #######################
-COPY --from=prune /app/apps/bank-webhook/.env  /app/dist/.env
+# COPY --from=prune /app/apps/bank-webhook/.env  /app/dist/.env
 
 
 
 RUN ls -al /app/
 # RUN npm run db:generate
 # WORKDIR /app
-EXPOSE 8081
-ENV PORT=8081
+EXPOSE $WEB_HOOK_PORT
+# ENV PORT=8081
 ENV HOST="0.0.0.0"
 # CMD [ "/bin/sh/ls", "-al" ]
 CMD [ "node", "/app/dist/index.js" ]

@@ -38,6 +38,23 @@ jobs:
                     file: ./docker/Dockerfile.userapp
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_USER_APP}}:latest
+                    build-args: |
+                        PORT = ${{secrets.FE_PORT}}
+                        AUTH_TRUST_HOST = ${{secrets.AUTH_TRUST_HOST}}
+                        AUTH_SECRET = ${{secrets.AUTH_SECRET}}
+                        AUTH_GITHUB_ID = ${{secrets.AUTH_GITHUB_ID}}
+                        AUTH_GITHUB_SECRET = ${{secrets.AUTH_GITHUB_SECRET}}
+                        CUSTOM_NAME__AUTH_GOOGLE_ID = ${{secrets.CUSTOM_NAME__AUTH_GOOGLE_ID}}
+                        CUSTOM_NAME__AUTH_GOOGLE_SECRET = ${{secrets.CUSTOM_NAME__AUTH_GOOGLE_SECRET}}
+                        AUTH_GOOGLE_ID = ${{secrets.AUTH_GOOGLE_ID}}
+                        AUTH_GOOGLE_SECRET = ${{secrets.AUTH_GOOGLE_SECRET}}
+                        ALLOWED_METHODS = ${{secrets.ALLOWED_METHODS}}
+                        ALLOWED_ORIGIN = ${{secrets.ALLOWED_ORIGIN}}
+                        ALLOWED_HEADERS = ${{secrets.ALLOWED_HEADERS}}
+                        MAX_AGE = ${{secrets.MAX_AGE}}
+                        CREDENTIALS = ${{secrets.CREDENTIALS}}
+                        DOMAIN_URL = ${{secrets.DOMAIN_URL}}
+                        DATABASE_URL = ${{secrets.DATABASE_URL}}
 
             -
                 name: Build and Push Backend_Webhook Docker
@@ -47,6 +64,9 @@ jobs:
                     file: ./docker/Dockerfile.backend_webhook
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+                    build-args: |
+                        WEB_HOOK_PORT = ${{secrets.WEB_HOOK_PORT}}
+                        DATABASE_URL = ${{secrets.DATABASE_URL}}
 
             -
                 name: Pull latest image in EC2 and re-deploy
@@ -75,7 +95,7 @@ jobs:
                         sudo docker rm webhook-backend || true
 
                         # docker run -d --name user_app -p 8080:8080 ncb021/payment-app:latest ... (-e if any)
-                        sudo docker run -d --name webhook-backend -p 8081:8081 -e DATABASE_URL=${{ secrets.DATABASE_URL }}  ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+                        sudo docker run -d --name webhook-backend -p ${{secrets.WEB_HOOK_PORT}}:${{secrets.WEB_HOOK_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }}  ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
-                        sudo docker run -d --name user-app -p 8080:8080 ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+                        sudo docker run -d --name user-app -p ${{secrets.FE_PORT}}:${{secrets.FE_PORT}} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest

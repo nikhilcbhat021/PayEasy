@@ -53,12 +53,18 @@ const formAction = async (e:FormEvent<HTMLFormElement>, setDisableSubmit:React.D
         setDisableSubmit(true);
         const result = await p2pTransfer(Number(formData.get('amount'))*100, Number(formData.get('number')));
         if (result !== null) {
-            if (result.id !== -1) {
-                setTxnStatus(OnRampTransactionStatus.Success);
+            console.log(result);
+            if (result.errMsg !== "") {
+                // setTxnStatus(OnRampTransactionStatus.Processing);
+                enqueueSnackbar(result.errMsg, { variant: "error" });
+            } else if (result.id !== -1) {
+                // setTxnStatus(OnRampTransactionStatus.Success);
+                setTxnStatus(result.status)
                 enqueueSnackbar('Transaction Successfull. id = '+result.id , { variant: "success" });
                 // redirect(formData.get('bank') as string);
             } else {
-                setTxnStatus(OnRampTransactionStatus.Failed);
+                // setTxnStatus(OnRampTransactionStatus.Failed);
+                setTxnStatus(result.status)
                 enqueueSnackbar('Transaction Failed. id = '+result.id , { variant: "error" });    
             }
         } else {
@@ -66,7 +72,6 @@ const formAction = async (e:FormEvent<HTMLFormElement>, setDisableSubmit:React.D
             enqueueSnackbar('Transaction Failed due to server error', { variant: "error" });
             // redirect('/404');
         }
-
     } catch (error) {
         console.log('Caught');
         console.log((error as Error))
