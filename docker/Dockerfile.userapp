@@ -4,6 +4,53 @@ RUN apk update; \
 apk add --no-cache libc6-compat openssl;
 WORKDIR /app
 
+# Args are from github-workflow.
+# These are set as ENV vars to be used inside app. This is a better approach that copying .env file.
+ARG PORT
+ENV PORT=$PORT
+
+ARG AUTH_TRUST_HOST
+ENV AUTH_TRUST_HOST=$AUTH_TRUST_HOST
+
+ARG AUTH_SECRET
+ENV AUTH_SECRET=$AUTH_SECRET
+
+ARG AUTH_GITHUB_SECRET
+ENV AUTH_GITHUB_SECRET=$AUTH_GITHUB_SECRET
+
+ARG AUTH_GITHUB_ID
+ENV AUTH_GITHUB_ID=$AUTH_GITHUB_ID
+
+ARG CUSTOM_NAME__AUTH_GOOGLE_ID
+ENV CUSTOM_NAME__AUTH_GOOGLE_ID=$CUSTOM_NAME__AUTH_GOOGLE_ID
+
+ARG CUSTOM_NAME__AUTH_GOOGLE_SECRET
+ENV CUSTOM_NAME__AUTH_GOOGLE_SECRET=$CUSTOM_NAME__AUTH_GOOGLE_SECRET
+
+ARG AUTH_GOOGLE_ID
+ENV AUTH_GOOGLE_ID=$AUTH_GOOGLE_ID
+
+ARG AUTH_GOOGLE_SECRET
+ENV AUTH_GOOGLE_SECRET=$AUTH_GOOGLE_SECRET
+
+ARG ALLOWED_METHODS
+ENV ALLOWED_METHODS=$ALLOWED_METHODS
+
+ARG ALLOWED_ORIGIN
+ENV ALLOWED_ORIGIN=$ALLOWED_ORIGIN
+
+ARG ALLOWED_HEADERS
+ENV ALLOWED_HEADERS=$ALLOWED_HEADERS
+
+ARG MAX_AGE
+ENV MAX_AGE=$MAX_AGE
+
+ARG CREDENTIALS
+ENV CREDENTIALS=$CREDENTIALS
+
+ARG DOMAIN_URL
+ENV DOMAIN_URL=$DOMAIN_URL
+
 # ARG DATABASE_URL
 # ENV DATABASE_URL=$DATABASE_URL
 
@@ -28,7 +75,9 @@ WORKDIR /app
 # WORKDIR /app/packages/db    --- is not required, as the db:generate should be run from /app.
 COPY --from=installer /app/node_modules ./node_modules
 COPY --from=prune /app/out/full/ ./
-COPY --from=prune /app/apps/user-app/.env ./apps/user-app
+# Below line should be replaced with something else.....
+# COPY --from=prune /app/apps/user-app/.env ./apps/user-app
+
 # RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
 RUN npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
 RUN cd /app/apps/user-app && yarn add sharp
@@ -55,10 +104,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.next/static ./apps/user-app/.next/static
 COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/public ./apps/user-app/public
 ####################### This is not supposed to be done. Environment variables should be sent in at run-time "-e KK=VV" or at build-time with "--build-arg" #######################
-COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.env ./apps/user-app/
-EXPOSE 8080
+# COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.env ./apps/user-app/
+EXPOSE $PORT
 ENV NODE_ENV=production
-ENV PORT=8080 
+ENV PORT=$PORT
 ENV HOSTNAME="0.0.0.0"
 
 # CMD ["yarn", "start-user-app-prod"]

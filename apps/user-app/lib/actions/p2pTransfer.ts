@@ -2,8 +2,9 @@
 
 import { auth } from "../auth";
 import * as db from '@repo/db/index.ts';
+import { ErrorCodeMappings } from '@/lib/types';
 
-const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number}> => {
+const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number, status:db.OnRampTransactionStatus, errMsg:string}> => {
 
     /**
      * 
@@ -25,21 +26,31 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
      * Return true.
      */
 
+    let txnTracker:{id:number, status:db.OnRampTransactionStatus, errMsg:string} = { 
+        id: -1, status: db.OnRampTransactionStatus.Failed, errMsg:""
+    }
+
     if (!amount || !to_number || to_number.toString().length !== 10 || amount <= 0) {
-        throw new Error('Invalid Inputs');
+        txnTracker.errMsg = ErrorCodeMappings.err_input_inv;
+        return txnTracker;
+        // throw new Error('Invalid Inputs');
     }
 
     const session = await auth();
 
     if (!session?.user) {
-        throw new Error('User not signed in');
+        txnTracker.errMsg = ErrorCodeMappings.err_auth_inv;
+        return txnTracker;
+        // throw new Error('User not signed in');
     }
 
     const from_id = session?.user.id;
     const from_number = session.user.number;
 
     if (to_number === from_number) {
-        throw new Error('Can\'t send money to yourself');
+        txnTracker.errMsg = ErrorCodeMappings.err_txn_self;
+        return txnTracker;
+        // throw new Error('Can\'t send money to yourself');
     }
 
     const to_id = await db.prismaClient.user.findFirst({
@@ -51,11 +62,9 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
     })
 
     if (!to_id) {
-        throw new Error ('Recepient User not found. Please check the number');
-    }
-
-    let txnTracker:{id:number, status:db.OnRampTransactionStatus} = { 
-        id: -1, status: db.OnRampTransactionStatus.Failed 
+        txnTracker.errMsg = ErrorCodeMappings.err_user_nf;
+        return txnTracker;
+        // throw new Error ('Recepient User not found. Please check the number');
     }
 
 
@@ -73,7 +82,8 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
                         id: true
                     }
                 }).then((d) => d.id) ,
-            "status":  db.OnRampTransactionStatus.Processing
+            "status":  db.OnRampTransactionStatus.Processing,
+            "errMsg": ""
         }
         
         
@@ -90,7 +100,9 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
             })
 
             if (!from_balance || Number(from_balance.balance?.amount) < amount) {
-                throw new Error('Insufficient Balance');
+                txnTracker.errMsg = ErrorCodeMappings.err_user_bal;
+                return txnTracker;
+                // throw new Error('Insufficient Balance');
             }
 
             // await new Promise(r => setTimeout(r, 4000));
@@ -132,14 +144,18 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
             timeout: 20000  //max time till which this txn is valid.
         })
 
-        console.log("Nikhil", "Transaction Success -- "+txnTracker);
+        console.log("Nikhil", "Transaction Success -- ");
+        console.log(txnTracker)
         return txnTracker
     } catch (error) {
         console.log((error as Error).message);
-        throw new Error((error as Error).message);
+        txnTracker.errMsg = (error as Error).message;
+        return txnTracker;
+        // throw new Error((error as Error).message);
     } finally {
         if (txnTracker.id !== -1 && txnTracker.status !== db.OnRampTransactionStatus.Success) {
-            console.log("Nikhil", "Transaction Failed -- "+txnTracker);
+            console.log("Nikhil", "Transaction Failed -- ");
+            console.log(txnTracker)
             await db.prismaClient.p2pTransaction.update({
                 where: {
                     id: txnTracker.id
@@ -151,6 +167,8 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
                 }
             })
         }
+        return txnTracker;
+        // throw new Error()// txnTracker;
     }
 }
 
