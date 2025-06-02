@@ -11,6 +11,7 @@ out/
 ./**/.next
 ./**/build
 
+./**/.env*
 
 .git
 *.log

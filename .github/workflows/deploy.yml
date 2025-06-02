@@ -39,22 +39,22 @@ jobs:
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_USER_APP}}:latest
                     build-args: |
-                        FE_PORT = ${{secrets.FE_PORT}}
-                        AUTH_TRUST_HOST = ${{secrets.AUTH_TRUST_HOST}}
-                        AUTH_SECRET = ${{secrets.AUTH_SECRET}}
-                        AUTH_GITHUB_ID = ${{secrets.AUTH_GITHUB_ID}}
-                        AUTH_GITHUB_SECRET = ${{secrets.AUTH_GITHUB_SECRET}}
-                        CUSTOM_NAME__AUTH_GOOGLE_ID = ${{secrets.CUSTOM_NAME__AUTH_GOOGLE_ID}}
-                        CUSTOM_NAME__AUTH_GOOGLE_SECRET = ${{secrets.CUSTOM_NAME__AUTH_GOOGLE_SECRET}}
-                        AUTH_GOOGLE_ID = ${{secrets.AUTH_GOOGLE_ID}}
-                        AUTH_GOOGLE_SECRET = ${{secrets.AUTH_GOOGLE_SECRET}}
-                        ALLOWED_METHODS = ${{secrets.ALLOWED_METHODS}}
-                        ALLOWED_ORIGIN = ${{secrets.ALLOWED_ORIGIN}}
-                        ALLOWED_HEADERS = ${{secrets.ALLOWED_HEADERS}}
-                        MAX_AGE = ${{secrets.MAX_AGE}}
-                        CREDENTIALS = ${{secrets.CREDENTIALS}}
-                        DOMAIN_URL = ${{secrets.DOMAIN_URL}}
-                        DATABASE_URL = ${{secrets.DATABASE_URL}}
+                        FE_PORT=${{secrets.FE_PORT}}
+                        AUTH_TRUST_HOST=${{secrets.AUTH_TRUST_HOST}}
+                        AUTH_SECRET=${{secrets.AUTH_SECRET}}
+                        AUTH_GITHUB_ID=${{secrets.AUTH_GITHUB_ID}}
+                        AUTH_GITHUB_SECRET=${{secrets.AUTH_GITHUB_SECRET}}
+                        CUSTOM_NAME__AUTH_GOOGLE_ID=${{secrets.CUSTOM_NAME__AUTH_GOOGLE_ID}}
+                        CUSTOM_NAME__AUTH_GOOGLE_SECRET=${{secrets.CUSTOM_NAME__AUTH_GOOGLE_SECRET}}
+                        AUTH_GOOGLE_ID=${{secrets.AUTH_GOOGLE_ID}}
+                        AUTH_GOOGLE_SECRET=${{secrets.AUTH_GOOGLE_SECRET}}
+                        ALLOWED_METHODS=${{secrets.ALLOWED_METHODS}}
+                        ALLOWED_ORIGIN=${{secrets.ALLOWED_ORIGIN}}
+                        ALLOWED_HEADERS=${{secrets.ALLOWED_HEADERS}}
+                        MAX_AGE=${{secrets.MAX_AGE}}
+                        CREDENTIALS=${{secrets.CREDENTIALS}}
+                        DOMAIN_URL=${{secrets.DOMAIN_URL}}
+                        DATABASE_URL=${{secrets.DATABASE_URL}}
 
             -
                 name: Build and Push Backend_Webhook Docker
@@ -65,8 +65,8 @@ jobs:
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
                     build-args: |
-                        WEB_HOOK_PORT = ${{secrets.WEB_HOOK_PORT}}
-                        DATABASE_URL = ${{secrets.DATABASE_URL}}
+                        WEB_HOOK_PORT=${{secrets.WEB_HOOK_PORT}}
+                        DATABASE_URL=${{secrets.DATABASE_URL}}
 
             -
                 name: Pull latest image in EC2 and re-deploy
