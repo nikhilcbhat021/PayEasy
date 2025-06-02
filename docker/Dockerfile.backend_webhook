@@ -37,7 +37,7 @@ COPY --from=prune /app/out/full ./
 # COPY --from=prune /app/apps/bank-webhook/.env  ./apps/bank-webhook
 COPY --from=prune /app/out/yarn.lock ./yarn.lock
 # RUN yarn add -W prisma@6.5.0
-RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema ./packages/db/prisma/schema.prisma
+RUN npx prisma@6.5.0 generate --schema=./packages/db/prisma/schema.prisma
 # RUN yarn run db:generate
 # RUN cd /app/apps/user-app && yarn add sharp
 RUN npx turbo@2.4.4 run build --filter=bank-webhook
@@ -66,7 +66,7 @@ RUN ls -al /app/
 # RUN npm run db:generate
 # WORKDIR /app
 EXPOSE $WEB_HOOK_PORT
-# ENV PORT=8081
+ENV PORT=$WEB_HOOK_PORT
 ENV HOST="0.0.0.0"
 # CMD [ "/bin/sh/ls", "-al" ]
 CMD [ "node", "/app/dist/index.js" ]

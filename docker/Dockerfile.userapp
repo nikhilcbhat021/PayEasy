@@ -82,8 +82,8 @@ COPY --from=prune /app/out/full/ ./
 COPY --from=prune /app/out/yarn.lock ./yarn.lock
 
 # RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema packages/db/prisma/schema.prisma
-RUN DATABASE_URL=$DATABASE_URL npx prisma@6.5.0 generate --schema ./packages/db/prisma/schema.prisma
-RUN cd /app/apps/user-app && yarn add sharp
+RUN npx prisma@6.5.0 generate --schema=./packages/db/prisma/schema.prisma
+RUN cd /app/apps/user-app && yarn add sharp@0.32.6 && cd ../..
 RUN npx turbo@2.4.4 run build --filter=user-app
 
 
