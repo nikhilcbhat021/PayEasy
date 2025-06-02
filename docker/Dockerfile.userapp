@@ -6,8 +6,8 @@ WORKDIR /app
 
 # Args are from github-workflow.
 # These are set as ENV vars to be used inside app. This is a better approach that copying .env file.
-ARG PORT
-ENV PORT=$PORT
+ARG FE_PORT
+ENV FE_PORT=$FE_PORT
 
 ARG AUTH_TRUST_HOST
 ENV AUTH_TRUST_HOST=$AUTH_TRUST_HOST
@@ -108,9 +108,10 @@ COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.next/static ./apps
 COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/public ./apps/user-app/public
 ####################### This is not supposed to be done. Environment variables should be sent in at run-time "-e KK=VV" or at build-time with "--build-arg" #######################
 # COPY --from=builder --chown=nextjs:nodejs /app/apps/user-app/.env ./apps/user-app/
-EXPOSE $PORT
 ENV NODE_ENV=production
-ENV PORT=$PORT
+
+EXPOSE $FE_PORT
+ENV PORT=$FE_PORT
 ENV HOSTNAME="0.0.0.0"
 
 # CMD ["yarn", "start-user-app-prod"]

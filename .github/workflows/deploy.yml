@@ -39,7 +39,7 @@ jobs:
                     push: true
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{vars.DOCKER_USER_APP}}:latest
                     build-args: |
-                        PORT = ${{secrets.FE_PORT}}
+                        FE_PORT = ${{secrets.FE_PORT}}
                         AUTH_TRUST_HOST = ${{secrets.AUTH_TRUST_HOST}}
                         AUTH_SECRET = ${{secrets.AUTH_SECRET}}
                         AUTH_GITHUB_ID = ${{secrets.AUTH_GITHUB_ID}}
@@ -81,7 +81,7 @@ jobs:
                         ### If the EC2 Instance doesn't have docker installed, the below commands will fail.
                         
                         # pull both images from dock-hub
-                        sudo set +e
+                        # sudo set +e
                         sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
                         sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
 
@@ -103,4 +103,4 @@ jobs:
 
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
                         sudo docker run -d --name user-app -p ${{secrets.FE_PORT}}:${{secrets.FE_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
-                        sudo set -e
+                        # sudo set -e
