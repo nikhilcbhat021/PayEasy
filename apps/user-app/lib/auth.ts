@@ -148,6 +148,10 @@ export const authOptions:NextAuthConfig = {
             return ret;
         },
     },
+    // pages: {
+        // signIn: '/api/auth/signin',
+        // signOut: '/api/auth/signout'
+    // }
     // trustHost: true
 }
 

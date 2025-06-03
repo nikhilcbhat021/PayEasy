@@ -17,7 +17,7 @@ const Transactions = async ({
     }
 
     const params_data = await params;
-    console.log(params_data);
+    // console.log(params_data);
 
     const allRawTransactions = await getAllTransactions(false);
 
