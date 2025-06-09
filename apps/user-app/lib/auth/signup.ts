@@ -3,6 +3,7 @@
 import * as db from '@repo/db/index.ts';
 import { ErrorCodeMappings } from '@/lib/types';
 import { randomUUID } from 'crypto';
+import bcrypt from 'bcrypt';
 
 interface signupReturn {
     err:string, 
@@ -27,12 +28,14 @@ export default async function signup(phone:string, password:string):Promise<sign
             result.err = ErrorCodeMappings.err_user_already_exists
             return result;
         }
+        const saltRounds = 10;
+        const hashedPassword = await bcrypt.hash(password as string, saltRounds);
 
         const newUser = await db.prismaClient.user.create({
             data: {
                 email: `Un-used-fornow-${randomUUID()}.gmail.com`,
                 number: phone as string,
-                password: password as string,
+                password: hashedPassword,
                 balance: {
                     create: {
                         amount: 100,

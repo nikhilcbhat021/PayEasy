@@ -3,15 +3,17 @@
 import { useEffect, useState } from "react";
 
 
-const AnimateDots = () => {
+const AnimateDots = ({dotColor="black"}:{dotColor?:String}) => {
 
     const [dots, setDots] = useState(3);
+    const bgColor = `bg-${dotColor} `;
+    console.log(bgColor);
 
     useEffect(() => {
         const intv = setInterval(() => {
             setDots(d => {
                 const updated = d === 3 ? 1 : d+1;  // by default have 3 animating dots...
-                console.log(updated);
+                // console.log(updated);
                 return updated;
             })
         }, 500);
@@ -28,8 +30,8 @@ const AnimateDots = () => {
                 {
                     Array.from({length: dots}).map((_, idx) => {
                         const delay__tw = `[animation-delay:-${((idx+3)%3)*0.5}]`;
-                        console.log(idx);
-                        return <span key={idx} className={`w-2 h-2 bg-black rounded-full animate-bounce ${delay__tw}`} />
+                        // console.log(idx);
+                        return <span key={idx} className={`w-1.5 h-1.5 bg-black rounded-full animate-bounce ${delay__tw} ${bgColor}`} />
                     })
                 }
             </div>

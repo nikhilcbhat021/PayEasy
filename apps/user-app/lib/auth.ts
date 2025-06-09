@@ -25,8 +25,8 @@ export const authOptions:NextAuthConfig = {
                 if (!credentials?.number || !credentials?.password) {
                     throw new Error("Email and password are required");
                 }
-                const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
-                console.log(hashedPassword);
+                // const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
+                // console.log(hashedPassword);
                 const existingUser = await db.prismaClient.user.findFirst({
                     where: {
                         number: credentials.number

@@ -2,6 +2,7 @@
 
 import { SidebarElement } from '@/lib/types';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 import Link from 'next/link';
 
 const Sidebar = ({ sidebarChildren }: {
@@ -9,6 +10,9 @@ const Sidebar = ({ sidebarChildren }: {
 }) => {
 
     const router = useRouter();
+    const path = usePathname();
+    // alert();
+    console.log(path);
     // const [mounted, setMounted] = useState(false);
 
     // useEffect(() => {
@@ -31,7 +35,7 @@ const Sidebar = ({ sidebarChildren }: {
                                 <div
                                     tabIndex={-1}
                                     // onClick={() => router.push(child.href)}
-                                    className='p-4 my-2 flex gap-4 font-semibold items-center focus:text-[#6a51d6]'
+                                    className={`p-4 my-2 flex gap-4 font-semibold items-center ${child.href === path && `text-[#6a51d6]`}`}
                                 >
                                     <div>{child.icon}</div>
                                     <div>{child.heading}</div>
