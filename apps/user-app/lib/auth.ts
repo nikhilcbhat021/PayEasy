@@ -45,33 +45,34 @@ export const authOptions:NextAuthConfig = {
                         // return user;
                     }
                     // console.log("----------- NULL -----------");
-                    return null;
-                } else {
-                    const createdUser = await db.prismaClient.user.create({
-                        data: {
-                            email: `${randomUUID()}.gmail.com`,
-                            number: credentials.number as string,
-                            password: hashedPassword,
-                            balance: {
-                                create: {
-                                    amount: 0,
-                                    locked: 0
-                                }
-                            }
-                        },
-                        omit: {
-                            email: true,
-                            password: true,
-                            createdAt: true,
-                        }
-                    })
-
-                    // console.log(createdUser);
-                    return {
-                        ...createdUser,
-                        number: Number(createdUser.number)
-                    };
                 }
+                return null;
+                // } else {
+                //     const createdUser = await db.prismaClient.user.create({
+                //         data: {
+                //             email: `UnUsed-fornow-${randomUUID()}.gmail.com`,
+                //             number: credentials.number as string,
+                //             password: hashedPassword,
+                //             balance: {
+                //                 create: {
+                //                     amount: 0,
+                //                     locked: 0
+                //                 }
+                //             }
+                //         },
+                //         omit: {
+                //             email: true,
+                //             password: true,
+                //             createdAt: true,
+                //         }
+                //     })
+
+                //     // console.log(createdUser);
+                //     return {
+                //         ...createdUser,
+                //         number: Number(createdUser.number)
+                //     };
+                // }
             }
         }),
         // GitHub({
@@ -148,10 +149,10 @@ export const authOptions:NextAuthConfig = {
             return ret;
         },
     },
-    // pages: {
-        // signIn: '/api/auth/signin',
-        // signOut: '/api/auth/signout'
-    // }
+    pages: {
+        signIn: '/auth/signin',
+        // signOut: '/auth/signout'
+    }
     // trustHost: true
 }
 

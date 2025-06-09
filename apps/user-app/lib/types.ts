@@ -67,6 +67,8 @@ export enum ErrorCodeMappings {
     err_input_inv = 'Invalid Inputs',
     err_auth_inv = 'User not signed in',
     err_user_nf = 'Recepient User not found. Please check the number',
+    err_user_already_exists = 'User already exists!',
+    err_incorrect_creds = 'Phone number or Password is not correct!',
     err_txn_self = 'Can\'t send money to yourself',
     err_user_bal = 'Insufficient Balance'
 }

@@ -53,23 +53,22 @@ const p2pTransfer = async (amount: number, to_number: number):Promise<{id:number
         // throw new Error('Can\'t send money to yourself');
     }
 
-    const to_id = await db.prismaClient.user.findFirst({
-        where: {
-            number: to_number.toString()
-        }, select: {
-            id: true,
-        }
-    })
-
-    if (!to_id) {
-        txnTracker.errMsg = ErrorCodeMappings.err_user_nf;
-        return txnTracker;
-        // throw new Error ('Recepient User not found. Please check the number');
-    }
-
-
     try {
         
+        const to_id = await db.prismaClient.user.findFirst({
+            where: {
+                number: to_number.toString()
+            }, select: {
+                id: true,
+            }
+        })
+
+        if (!to_id) {
+            txnTracker.errMsg = ErrorCodeMappings.err_user_nf;
+            return txnTracker;
+            // throw new Error ('Recepient User not found. Please check the number');
+        }
+
         txnTracker = { 
             "id": await db.prismaClient.p2pTransaction.create({
                     data: {

@@ -1,3 +1,5 @@
+import Statistics from "@repo/ui/statisticsHome";
+
 const Landing = async ({
     params
 }: {
@@ -8,9 +10,7 @@ const Landing = async ({
     // console.log(params_data);
 
     return (
-        <div>
-            Home Page
-        </div>
+        <Statistics/>
     )
 }
 

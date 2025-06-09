@@ -41,6 +41,12 @@ const SidebarClient = () => {
     return <nav className="w-[60%] md:w-1/4 lg:w-1/5 border-r-1 border-stone-400">
         <Sidebar sidebarChildren={sidebar_buttons}/>
     </nav>
+
+    //  return <nav className="relative w-[60%] md:w-1/4 lg:w-1/5 border-r-1 border-stone-400">
+    //     <section className="fixed top-0 left-0 ">
+    //         <Sidebar sidebarChildren={sidebar_buttons}/>
+    //     </section>
+    // </nav>
 }
 
 export default SidebarClient;

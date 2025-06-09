@@ -8,25 +8,26 @@ interface UserType {
         number?: number | string,
         provider?: string
     }
+    authenticated: boolean
     onSignin: () => void
     onSignout: () => void
 }
 
 
-const Appbar = ({ user, onSignin, onSignout }: UserType) => {
-    console.log(user.number);
+const Appbar = ({ user, onSignin, onSignout, authenticated }: UserType) => {
+
+    console.log(user?.number);
+    console.log(authenticated);
 
     return (
-        <Suspense>
-            <div className='w-full border-b-1 border-stone-400 flex justify-between items-center px-4 py-2 text-lime-400 text-center'>
-                <Logo />
-                <Button onClick={user.number ? onSignout : onSignin}
-                    className='p-2 bg-indigo-900 text-md cursor-pointer border-indigo-900 border-2 rounded-lg hover:border-white text-white'
-                >
-                    {user.number ? "SignOut" : "SignIn"}
-                </Button>
-            </div>
-        </Suspense>
+        <div className='w-full border-b-1 border-stone-400 flex justify-between items-center px-4 py-2 text-lime-400 text-center'>
+            <Logo />
+            <Button onClick={authenticated !== true ? onSignin : onSignout}
+                className='p-2 bg-indigo-900 text-md cursor-pointer border-indigo-900 border-2 rounded-lg hover:border-white text-white'
+            >
+                {authenticated !== true ? "SignIn" : "SignOut"}
+            </Button>
+        </div>
     )
 }
 
