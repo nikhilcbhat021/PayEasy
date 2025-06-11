@@ -1,0 +1,85 @@
+@import 'tailwindcss';
+
+@config '../tailwind.config.ts';
+
+/*
+  The default border color has changed to `currentcolor` in Tailwind CSS v4,
+  so we've added these compatibility styles to make sure everything still
+  looks the same as it did with Tailwind CSS v3.
+
+  If we ever want to remove these styles, we need to add an explicit border
+  color utility to any element that depends on these defaults.
+*/
+@layer base {
+  *,
+  ::after,
+  ::before,
+  ::backdrop,
+  ::file-selector-button {
+    border-color: var(--color-gray-200, currentcolor);
+  }
+}
+
+:root {
+  --background: #ffffff;
+  --foreground: #171717;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+      --background: oklch(0.923 0.003 48.717);
+      /* --background: var(--color-stone-200); */
+      /* --background: #ffffff; */
+    --foreground: #0a0a0a;
+  }
+}
+
+html,
+body {
+  max-width: 100vw;
+  /* overflow-x: hidden; */
+}
+
+body {
+  color: var(--foreground);
+  background: var(--background);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+.imgDark {
+  display: none;
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+select:-webkit-autofill,
+select:-webkit-autofill:hover,
+select:-webkit-autofill:focus {
+  /* border: 1px solid green; */
+  -webkit-text-fill-color: black;
+  -webkit-box-shadow: 0 0 0px 1000px #fbf2a2 inset;
+  transition: background-color 5000s ease-in-out 0s;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    color-scheme: dark;
+  }
+
+  .imgLight {
+    display: none;
+  }
+  .imgDark {
+    display: unset;
+  }
+}

@@ -1,0 +1,42 @@
+{
+  "extends": "@repo/typescript-config/nextjs.json",
+  "include": [
+    "**/*.ts",
+    "**/*.tsx",
+    "next-env.d.ts",
+    "next-auth.d.ts",
+    "declaration.d.ts",
+    "next.config.js",
+    ".next/types/**/*.ts"
+  ],
+  "compilerOptions": {
+    "noImplicitAny": true,
+    "plugins": [
+      {
+        "name": "next"
+      }
+    ],
+    "paths": {
+      "@/data/*": [
+        "../../data/*"
+      ],
+      "@/layouts/*": [
+        "../../layouts/*"
+      ],
+      "@/lib/*": [
+        "./lib/*"
+      ],
+      "@/components/*": [
+        "./components/*"
+      ],
+      "@/css/*": [
+        "../../css/*"
+      ]
+    },
+    "allowImportingTsExtensions": true,
+    "incremental": true
+  },
+  "exclude": [
+    "node_modules"
+  ]
+}
