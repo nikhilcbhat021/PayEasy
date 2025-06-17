@@ -139,5 +139,5 @@ app.post('/bankwebhook', async (req, res) => {
 
 })
 
-app.listen(8081, () => {console.log(`Listening at ${process.env.DATABASE_URL}`)});
+app.listen(process.env.WEB_HOOK_PORT, () => {console.log(`Listening at ${process.env.WEB_HOOK_PORT}, db = ${process.env.DATABASE_URL}`)});
 // app.listen(process.env.WEB_HOOK_PORT);
