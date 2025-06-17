@@ -22,9 +22,11 @@ app.post('/bankwebhook', async (req, res) => {
     // are matching...
     const paymentInfo:{
         token: string,
+        // provider: string,
         status: "approved" | "rejected"
     } = {
         token: req.body.token,
+        // provider: req.body.token,
         // userId: req.body.user_identifier,
         // amount: req.body.amount,
         status: req.body.status
@@ -33,10 +35,10 @@ app.post('/bankwebhook', async (req, res) => {
     if (paymentInfo.token && paymentInfo.status) {
         try {
             const onramptxn = await db.prismaClient.onRampTransaction.findFirst({
-                where: {token: paymentInfo.token},
+                where: {token: paymentInfo.token},  // req.body.token
                 select: {
                     userId: true,
-                    amount: true
+                    amount: true,
                 }
             })
             

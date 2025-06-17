@@ -11,7 +11,7 @@ import { auth } from "../auth";
  * @param provider : BankProvider from dropdown
  * @param amount : Number
  */
-const startOnRampTxn = async(provider:BankInfoType, amount:number):Promise<boolean> => {
+const startOnRampTxn = async(provider:BankInfoType, amount:number):Promise<{token: string}> => {
 
     // 1.  Create a txn and add it for the Loggen in User's(from session) OnRampTransactions[]
     //     with status - Pending.
@@ -22,6 +22,7 @@ const startOnRampTxn = async(provider:BankInfoType, amount:number):Promise<boole
     const user = session?.user;
 
     if (user && amount>0 && provider) {
+        const newToken = await getRandomToken();
         const resp = await db.prismaClient.user.update({
             where: {
                 id: user.id
@@ -33,20 +34,20 @@ const startOnRampTxn = async(provider:BankInfoType, amount:number):Promise<boole
                         amount: amount,
                         status: db.OnRampTransactionStatus.Processing,
                         startTime: new Date(),
-                        token: await getRandomToken(), // Ideally the token should come from the bank server.
+                        token: newToken, // Ideally the token should come from the bank server.
                     }
                 }
             }
         })
 
         if (!resp) {
-            return false;
+            return {token: '-1'};
         }
 
-        return true;
+        return {token: newToken};
     }
 
-    return false;
+    return {token: '-1'};
 }
 
 const getRandomToken = async() => {

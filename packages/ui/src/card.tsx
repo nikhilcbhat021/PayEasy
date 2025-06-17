@@ -16,10 +16,7 @@ export function Card({
   children: React.ReactNode;
 }): JSX.Element {
 
-    const defaultClassNames = `h-full w-full \
-        ${!no_padding && 'p-4 px-4.5'} \
-        rounded-md flex flex-col items-left bg-stone-100 divide-y divide-gray-300 *:w-full
-    `
+    const defaultClassNames = `h-full w-full ${!no_padding && 'p-4 px-4.5'} rounded-md flex flex-col items-left bg-stone-100 divide-y divide-gray-300 *:w-full`
     const formattedClassname = classNamesFormatting(className, defaultClassNames)
 
   return (

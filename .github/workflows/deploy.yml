@@ -71,6 +71,17 @@ jobs:
                         AUTH_URL=${{vars.AUTH_URL}}
 
             -
+                name: Build and Push Dummy_Banks Docker
+                uses: docker/build-push-action@v6
+                with:
+                    context: .
+                    file: ./docker/Dockerfile.dummy_banks_ui
+                    push: true
+                    tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_DUMMY_BANKS_APP }}:latest
+                    build-args: |
+                        DUMMY_BANKS_PORT=${{secrets.DUMMY_BANKS_PORT}}
+
+            -
                 name: Pull latest image in EC2 and re-deploy
                 uses: appleboy/ssh-action@master
                 with:
@@ -85,24 +96,29 @@ jobs:
                         # pull both images from dock-hub
                         # sudo set +e
                         sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
-                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
 
                         sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
-                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
+
+                        sudo docker pull ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_DUMMY_BANKS_APP }}:latest
 
                         # stop the running docks (user_app, webhook)
                         sudo docker stop user-app || true
                         sudo docker stop webhook-backend || true
+                        sudo docker stop dummy-banks || true
                         # docker stop  || true
 
                         # rm the running docks (user_app, webhook) || true
                             # the above 2 could have been replaced with kill, if we can get the sha-id of the container.
                         sudo docker rm user-app || true
                         sudo docker rm webhook-backend || true
+                        sudo docker rm dummy-banks || true
 
                         # docker run -d --name user_app -p 8080:8080 ncb021/payment-app:latest ... (-e if any)
                         sudo docker run -d --name webhook-backend -p ${{secrets.WEB_HOOK_PORT}}:${{secrets.WEB_HOOK_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }}  ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_BACKEND_WEBHOOK_APP }}:latest
 
+                        sudo docker run -d --name user-app -p ${{secrets.DUMMY_BANKS_PORT}}:${{secrets.DUMMY_BANKS_PORT}} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_DUMMY_BANKS_APP }}:latest
+
                         # docker run -d --name webhook -p 8081:8081  ncb021/webhook:latest ... (-e if any)
                         sudo docker run -d --name user-app -p ${{secrets.FE_PORT}}:${{secrets.FE_PORT}} -e DATABASE_URL=${{ secrets.DATABASE_URL }} ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_USER_APP }}:latest
+
                         # sudo set -e

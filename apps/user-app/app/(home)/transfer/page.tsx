@@ -22,7 +22,7 @@ const Transfer = async ({
         >
             <div className="h-full flex flex-col justify-start mt-10 items-center">
                 <div id="sendMoney" 
-                    className={` w-[40%]
+                    className={`w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%]
                         ${outline && 'outline-1'}
                     `}
                 >

@@ -13,13 +13,14 @@ export default async function DummyBank({
 
     const { bankName } = await params;
     const { token = '', requester = 'Payme', phoneNumber = '+910000000000', amount='0', webhook_url='' } = await searchParams;
+    const decodedBankName = decodeURIComponent(bankName);
     // const requestBody = await fetch(`/api/${bankName}/`, {
     //     method: "POST",
 
     // })
 
     return <main className="w-[75%] flex flex-col justify-center items-center m-auto p-3">
-        <p className="py-8 text-6xl font-light text-emerald-900 ">{bankName[0]?.toUpperCase()+bankName.substring(1)}{'  '}Netbanking</p>
+        <p className="py-8 text-6xl font-light text-emerald-900 ">{decodedBankName[0]?.toUpperCase()+decodedBankName.substring(1)}{'  '}Netbanking</p>
         
         <Card 
             labelStyles='font-semibold text-purple-700 text-4xl mb-12' 
@@ -30,18 +31,3 @@ export default async function DummyBank({
         </Card>
     </main>
 }
-
-{/* <div className="h-full flex flex-col justify-start mt-10 items-center">
-    <div id="sendMoney" 
-        className={`w-[90%] sm:w-[70%] md:w-[50%] lg:w-[40%]
-            ${outline && 'outline-1'}
-        `}
-    >
-        <Card >
-            <p>{token}</p>
-            <p>{requester}</p>
-            <p>{phoneNumber}</p>
-            <p>{amount}</p>
-        </Card>
-    </div>
-</div> */}

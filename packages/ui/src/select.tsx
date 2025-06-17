@@ -22,7 +22,7 @@ export const Select = ({
         <div>
             { label && <h2 className='font-semibold text-sm'>Bank</h2> }
             <select name={name} id={id} className={`border border-gray-300 bg-stone-50 p-2.5 my-1 text-xs rounded 
-                text-gray-900 rounded focus:ring-blue-500 focus:border-blue-500 block
+                text-gray-900 focus:ring-blue-500 focus:border-blue-500 block
                 ${fit ? 'w-fit' : 'w-full'}
                 ${className}
             `} >

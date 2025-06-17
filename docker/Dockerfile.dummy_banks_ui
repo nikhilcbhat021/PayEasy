@@ -1,0 +1,53 @@
+FROM node:22.15.0-alpine3.20 AS base
+RUN apk update; \
+apk add --no-cache libc6-compat openssl;
+WORKDIR /app
+ARG DUMMY_BANKS_PORT
+ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
+
+# prune
+FROM base AS prune
+RUN yarn global add turbo@2.4.4
+COPY . .
+RUN npx turbo@2.4.4 prune dummy-banks-ui --docker
+
+
+# yarn install  -->     node_modules
+FROM base AS installer
+WORKDIR /app
+COPY --from=prune /app/out/json .
+RUN yarn install --frozen-lockfile
+
+
+# yarn build    -->     generates .next
+FROM base AS builder
+WORKDIR /app
+COPY --from=installer /app/node_modules  ./node_modules
+COPY --from=prune /app/out/full ./
+COPY --from=prune /app/out/yarn.lock ./
+RUN npx turbo@2.4.4 run build --filter=dummy-banks-ui
+
+
+
+# yarn start    -->     runs the final server.js file and starts the app.
+# copy standalone, public etc... (maybe convert this to a SSG).
+FROM base AS runner
+WORKDIR /app
+ENV NODE_ENV=production
+ARG DUMMY_BANKS_PORT
+ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
+RUN addgroup --system --gid 1001 nodejs
+RUN adduser --system --uid 1001 nextjs
+RUN mkdir .next && chown nextjs:nodejs .next
+USER nextjs
+
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dummy-banks-ui/.next/standalone ./
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dummy-banks-ui/.next/static ./apps/dummy-banks-ui/.next/static
+COPY --from=builder --chown=nextjs:nodejs /app/apps/dummy-banks-ui/public ./apps/dummy-banks-ui/public
+
+EXPOSE $DUMMY_BANKS_PORT
+ENV PORT=$DUMMY_BANKS_PORT
+ENV HOSTNAME="0.0.0.0"
+
+
+CMD [ "node", "apps/dummy-banks-ui/server.js" ]

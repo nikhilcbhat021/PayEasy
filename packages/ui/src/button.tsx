@@ -17,10 +17,11 @@ export const Button = ({ children, className, onClick, category="dark", type="bu
     const btn_theme_styles = {
         // colors
         'success': `bg-green-700 hover:bg-green-600 
-                    disabled:bg-green-200 disabled:hover:bg-blue-200 disabled:text-gray-500
-
-                     text-white`,
-        'failure': `bg-red-700 hover:bg-red-600 text-white`,
+                    disabled:bg-green-200 disabled:text-green-600
+                    text-white`,
+        'failure': `bg-red-700 hover:bg-red-600 text-white
+                    disabled:bg-red-200 disabled:text-red-500
+                    text-white`,
         'info': `bg-sky-400 hover:bg-sky-300 text-black`,
         'dark': `bg-blue-950 hover:bg-blue-900 
                     disabled:bg-blue-200 disabled:hover:bg-blue-200 disabled:text-gray-500

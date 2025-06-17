@@ -1,7 +1,7 @@
 import { OnRampTransactionApprovalStatus } from "@repo/types/index.ts";
 
 export default async function transferRequestAction(token:string, webhook_url:string, clicked:OnRampTransactionApprovalStatus) {
-    console.log(webhook_url);
+    console.log(webhook_url, token, clicked);
     try {
         const webhookResponseRaw = await fetch(webhook_url, {
             method: "POST",
@@ -14,7 +14,7 @@ export default async function transferRequestAction(token:string, webhook_url:st
             })
         })
         const webhookResponse = await webhookResponseRaw.json();
-        
+
         console.log(webhookResponse);
         return webhookResponse;
 

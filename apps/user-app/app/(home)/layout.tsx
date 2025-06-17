@@ -1,7 +1,8 @@
 import { auth } from "@/lib/auth";
 import { redirect } from "next/navigation";
 import { ReactNode } from "react";
-import SidebarClient from "../SidebarClient";
+import SidebarClient from "@/components/SidebarClient";
+import "@repo/ui/styles.css"
 
 export default async function Layout ({children}: Readonly<{children: ReactNode}>) {
     const session = await auth();
