@@ -17,6 +17,8 @@ const SnackbarProvider = RawSnackbarProvider as unknown as React.ComponentType<S
 const Providers = ({children}: {children: React.ReactNode}) => {
     return (
         <SessionProvider>
+            {/* REMOVE this line: */}
+            {/* //@ts-expect-error Unused directive */}
             <SnackbarProvider autoHideDuration={3000} >
                 {children}
             </SnackbarProvider>
