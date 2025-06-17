@@ -56,6 +56,7 @@ jobs:
                         CREDENTIALS=${{secrets.CREDENTIALS}}
                         DOMAIN_URL=${{secrets.DOMAIN_URL}}
                         DATABASE_URL=${{secrets.DATABASE_URL}}
+                        WEBHOOK_URL=${{vars.WEBHOOK_URL}}
 
             -
                 name: Build and Push Backend_Webhook Docker
@@ -69,6 +70,7 @@ jobs:
                         WEB_HOOK_PORT=${{secrets.WEB_HOOK_PORT}}
                         DATABASE_URL=${{secrets.DATABASE_URL}}
                         AUTH_URL=${{vars.AUTH_URL}}
+                        WEBHOOK_URL=${{vars.WEBHOOK_URL}}
 
             -
                 name: Build and Push Dummy_Banks Docker
@@ -80,6 +82,7 @@ jobs:
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_DUMMY_BANKS_APP }}:latest
                     build-args: |
                         DUMMY_BANKS_PORT=${{secrets.DUMMY_BANKS_PORT}}
+                        WEBHOOK_URL=${{vars.WEBHOOK_URL}}
 
             -
                 name: Pull latest image in EC2 and re-deploy

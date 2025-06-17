@@ -15,16 +15,16 @@ import { FormEvent } from 'react';
 const SUPPORTED_BANKS:Array<BankInfoType> = [{
     name: "HDF-Sea Bank",
     ac_number: "1234567890",
-    // link: "https://dummy-bank/HDF-Sea%20Bank"
-    link: "http://localhost:3001/HDF-Sea%20Bank"
+    link: "https://dummy-banks.sputnikhil.top/HDF-Sea%20Bank"
+    // link: "http://localhost:3001/HDF-Sea%20Bank"
 }, {
     name: "Axes Bank",
     ac_number: "1234567891",
-    link: "https://dummy-bank/Axes%20Bank"
+    link: "https://dummy-banks.sputnikhil.top/Axes%20Bank"
 }, {
     name: "SBEye Bank",
     ac_number: "7862519038",
-    link: "https://dummy-bank/SBEye%20Bank"
+    link: "https://dummy-banks.sputnikhil.top/SBEye%20Bank"
 },];
 
 

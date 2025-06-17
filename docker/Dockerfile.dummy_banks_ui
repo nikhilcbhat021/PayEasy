@@ -4,6 +4,9 @@ apk add --no-cache libc6-compat openssl;
 WORKDIR /app
 ARG DUMMY_BANKS_PORT
 ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
+ARG WEBHOOK_URL
+ENV WEBHOOK_URL=$WEBHOOK_URL
+
 
 # prune
 FROM base AS prune
@@ -36,6 +39,9 @@ WORKDIR /app
 ENV NODE_ENV=production
 ARG DUMMY_BANKS_PORT
 ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
+ARG WEBHOOK_URL
+ENV WEBHOOK_URL=$WEBHOOK_URL
+
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
 RUN mkdir .next && chown nextjs:nodejs .next
