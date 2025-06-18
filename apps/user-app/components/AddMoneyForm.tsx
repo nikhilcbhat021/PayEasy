@@ -56,11 +56,11 @@ export const AddMoneyForm = () => {
         }
 
         const result = await startOnRampTxn(bankInfo, Number(amount)*100);
-        console.log(process.env.WEBHOOK_URL);
+        console.log(process.env.NEXT_PUBLIC_WEBHOOK_URL);
         if (result && result.token !== '-1') {
             // redirect(formData.get('bank') as string, );
             router.refresh();
-            window.open(`${formData.get('bank') as string}?token=${result.token}&amount=${Number(amount)*100}&webhook_url=${process.env.WEBHOOK_URL||'http://localhost:8081/bankwebhook'}`, '_blank')
+            window.open(`${formData.get('bank') as string}?token=${result.token}&amount=${Number(amount)*100}&webhook_url=${process.env.NEXT_PUBLIC_WEBHOOK_URL||'http://localhost:8081/bankwebhook'}`, '_blank')
         } else
             router.push('/500');
 
