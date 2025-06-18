@@ -4,13 +4,8 @@ apk add --no-cache libc6-compat openssl;
 WORKDIR /app
 ARG DUMMY_BANKS_PORT
 ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
-<<<<<<< Updated upstream
-ARG WEBHOOK_URL
-ENV WEBHOOK_URL=$WEBHOOK_URL
-=======
 ARG NEXT_PUBLIC_WEBHOOK_URL
 ENV NEXT_PUBLIC_WEBHOOK_URL=$NEXT_PUBLIC_WEBHOOK_URL
->>>>>>> Stashed changes
 
 
 # prune
@@ -44,13 +39,8 @@ WORKDIR /app
 ENV NODE_ENV=production
 ARG DUMMY_BANKS_PORT
 ENV DUMMY_BANKS_PORT=$DUMMY_BANKS_PORT
-<<<<<<< Updated upstream
-ARG WEBHOOK_URL
-ENV WEBHOOK_URL=$WEBHOOK_URL
-=======
 ARG NEXT_PUBLIC_WEBHOOK_URL
 ENV NEXT_PUBLIC_WEBHOOK_URL=$NEXT_PUBLIC_WEBHOOK_URL
->>>>>>> Stashed changes
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs
