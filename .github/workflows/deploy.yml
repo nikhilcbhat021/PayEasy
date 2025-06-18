@@ -56,7 +56,11 @@ jobs:
                         CREDENTIALS=${{secrets.CREDENTIALS}}
                         DOMAIN_URL=${{secrets.DOMAIN_URL}}
                         DATABASE_URL=${{secrets.DATABASE_URL}}
+<<<<<<< Updated upstream
                         WEBHOOK_URL=${{vars.WEBHOOK_URL}}
+=======
+                        NEXT_PUBLIC_WEBHOOK_URL=${{vars.NEXT_PUBLIC_WEBHOOK_URL}}
+>>>>>>> Stashed changes
 
             -
                 name: Build and Push Backend_Webhook Docker
@@ -70,7 +74,11 @@ jobs:
                         WEB_HOOK_PORT=${{secrets.WEB_HOOK_PORT}}
                         DATABASE_URL=${{secrets.DATABASE_URL}}
                         AUTH_URL=${{vars.AUTH_URL}}
+<<<<<<< Updated upstream
                         WEBHOOK_URL=${{vars.WEBHOOK_URL}}
+=======
+                        NEXT_PUBLIC_WEBHOOK_URL=${{vars.NEXT_PUBLIC_WEBHOOK_URL}}
+>>>>>>> Stashed changes
 
             -
                 name: Build and Push Dummy_Banks Docker
@@ -82,7 +90,11 @@ jobs:
                     tags: ${{ secrets.DOCKER_USERNAME }}/${{ vars.DOCKER_DUMMY_BANKS_APP }}:latest
                     build-args: |
                         DUMMY_BANKS_PORT=${{secrets.DUMMY_BANKS_PORT}}
+<<<<<<< Updated upstream
                         WEBHOOK_URL=${{vars.WEBHOOK_URL}}
+=======
+                        NEXT_PUBLIC_WEBHOOK_URL=${{vars.NEXT_PUBLIC_WEBHOOK_URL}}
+>>>>>>> Stashed changes
 
             -
                 name: Pull latest image in EC2 and re-deploy
