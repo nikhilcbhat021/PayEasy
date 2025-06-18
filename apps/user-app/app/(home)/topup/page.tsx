@@ -54,7 +54,7 @@ const Topup = async () => {
 
     return (
         <div className='h-full'>
-            <p className='font-semibold text-purple-700 text-4xl mb-12'>Topup</p>
+            <p className='font-semibold text-purple-700 text-2xl md:text-4xl mb-12'>Topup</p>
             <div className="grid grid-cols-1 gap-4 md:grid-cols-2">
                 <div id="addMoney" className={`md:row-span-2
                         ${outline && 'outline-1'}

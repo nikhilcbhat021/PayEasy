@@ -12,6 +12,7 @@ const Transactions = async ({
 }) => {
 
     const session = await auth();
+
     if(!session?.user) {
         redirect('/')
     }
@@ -48,9 +49,14 @@ const Transactions = async ({
         // <div className="w-full flex gap-2 flex-col items-center">
             <Card label='Peer Transactions'
                     no_padding className="bg-stone-200 divide-y-0"
-                    labelStyles='font-semibold text-purple-700 text-4xl mb-12'
+                    labelStyles='font-semibold text-purple-700 text-2xl md:text-4xl mb-12'
             >
-                <ViewTxnsCard showIcons allTransactions={tempTxn}/>
+                <div className="hidden md:block">
+                    <ViewTxnsCard showIcons allTransactions={tempTxn}/>
+                </div>
+                <div className="block md:collapse">
+                    <ViewTxnsCard allTransactions={tempTxn}/>
+                </div>
             </Card>
         // </div>
     )

@@ -25,8 +25,8 @@ const Sidebar = ({ sidebarChildren }: {
 
     return (
         <div className='text-sm w-full flex pt-16'>
-            <ul className='px-4 w-full
-                    *:hover:bg-stone-300 *:hover:rounded *:active:bg-stone-400 *:hover:cursor-pointer
+            <ul className='px-2 md:px-4 w-full
+                    *:hover:bg-stone-300 *:hover:rounded md:*:active:bg-stone-400 *:hover:cursor-pointer
                 '>
                 {
                     sidebarChildren.map((child: SidebarElement) =>
@@ -35,10 +35,10 @@ const Sidebar = ({ sidebarChildren }: {
                                 <div
                                     tabIndex={-1}
                                     // onClick={() => router.push(child.href)}
-                                    className={`p-4 my-2 flex gap-4 font-semibold items-center ${child.href === path && `text-[#6a51d6]`}`}
+                                    className={`p-2 py-3 my-3 md:p-4 md:my-3 md:bg-transparent flex gap-4 font-semibold justify-center md:justify-start items-center ${child.href === path && `text-[#6a51d6] border-2 rounded-xl md:rounded-none bg-stone-300 md:border-0`}`}
                                 >
                                     <div>{child.icon}</div>
-                                    <div>{child.heading}</div>
+                                    <div className='hidden md:block'>{child.heading}</div>
                                 </div>
                             </Link>
                         </li>

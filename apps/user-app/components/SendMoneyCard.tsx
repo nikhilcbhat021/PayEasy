@@ -30,11 +30,11 @@ const SendMoneyCard = () => {
                 </form>
             </Card> ) : (
                 txnStatus === OnRampTransactionStatus.Success ? (
-                    <Card className='text-center text-green-600 text-4xl p-20'>
+                    <Card className='text-center text-green-600 text-2xl md:text-4xl p-20'>
                         Success
                     </Card>
                 ) : (
-                    <Card className='text-center text-red-800 text-4xl p-20'>
+                    <Card className='text-center text-red-800 text-2xl md:text-4xl p-20'>
                         Failed
                     </Card>
                 )

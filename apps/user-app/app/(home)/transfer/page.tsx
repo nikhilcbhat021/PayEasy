@@ -16,7 +16,7 @@ const Transfer = async ({
     return (
         <Card 
             label="Send Money" 
-            labelStyles='font-semibold text-purple-700 text-4xl mb-12' 
+            labelStyles='font-semibold text-purple-700 text-2xl md:text-4xl mb-12' 
             // no_padding 
             className="bg-stone-200 divide-y-0"
         >
