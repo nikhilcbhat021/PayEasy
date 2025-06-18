@@ -24,7 +24,7 @@ export default function RequestCard({
     const router = useRouter();
 
     console.log(phoneNumber, typeof onClick);
-    return <Card label='Transfer Request' title_center labelStyles="text-4xl py-4">
+    return <Card label='Transfer Request' title_center labelStyles="text-2xl md:text-4xl py-4">
         <form onSubmit={async(e) => {
             e.preventDefault();
             if (!token || !webhook_url || !clicked) {
@@ -50,16 +50,16 @@ export default function RequestCard({
             }
 
         }} className='py-2 flex gap-4 flex-col'>
-            <p className="text-3xl py-4 font-light text-center"> <span className="font-bold text-stone-600">{requester}</span> is requesting a transfer of <span className="font-semibold text-slate-600">Rs.{Number(amount)/100}</span>/- </p>
+            <p className="text-xl md:text-3xl py-4 font-light text-center"> <span className="font-bold text-stone-600">{requester}</span> is requesting a transfer of <span className="font-semibold text-slate-600">Rs.{Number(amount)/100}</span>/- </p>
             <div className="self-center flex w-full gap-2 justify-center px-1 items-center">
                 <div className="min-h-full w-1/2 rounded-md bg-green-700">
                     <Button disabled={disabled} onClick={() => setClicked("approved")} category='success' size="full-width" type='submit' className='self-center'>
-                        <p className="text-2xl">Approve</p>
+                        <p className="text-md md:text-2xl">Approve</p>
                     </Button>
                 </div>
                 <div className="min-h-full w-1/2 rounded-md bg-red-700">
                     <Button disabled={disabled} onClick={() => setClicked("rejected")} category='failure' size="full-width" type='submit' className='self-center'>
-                        <p className="text-2xl">Reject</p>
+                        <p className="text-md md:text-2xl">Reject</p>
                     </Button>
                 </div>
             </div>

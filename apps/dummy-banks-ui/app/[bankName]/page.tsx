@@ -19,13 +19,13 @@ export default async function DummyBank({
 
     // })
 
-    return <main className="w-[75%] flex flex-col justify-center items-center m-auto p-3">
-        <p className="py-8 text-6xl font-light text-emerald-900 ">{decodedBankName[0]?.toUpperCase()+decodedBankName.substring(1)}{'  '}Netbanking</p>
+    return <main className="w-full text-center md:w-[75%] flex flex-col justify-center items-center m-auto p-3">
+        <p className="py-8 text-4xl md:text-6xl font-light text-emerald-900 ">{decodedBankName[0]?.toUpperCase()+decodedBankName.substring(1)}{'  '}Netbanking</p>
         
         <Card 
-            labelStyles='font-semibold text-purple-700 text-4xl mb-12' 
+            labelStyles='font-semibold text-purple-700 text-2xl md:text-4xl mb-12' 
             // no_padding 
-            className="bg-stone-200 divide-y-0 p-8 w-[80%]"
+            className="bg-stone-200 divide-y-0 p-4 md:p-8 w-[90%] md:w-[80%]"
         >
             <RequestCard token={token} requester={requester} phoneNumber={phoneNumber} amount={amount} webhook_url={webhook_url} />
         </Card>
