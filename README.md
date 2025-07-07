@@ -1,2 +1,2 @@
 # PayEasy
-A Payment Wallet webapp.
+A Nextjs Payment Wallet webapp, with a seperately scalable backend webhook.
