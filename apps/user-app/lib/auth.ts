@@ -22,6 +22,7 @@ export const authOptions:NextAuthConfig = {
             // TODO: User credentials type from next-aut
             async authorize(credentials: Partial<Record<"number" | "password", unknown>>) {
                 // Do zod validation, OTP validation here
+                console.log(`Inside /lib/auth.ts -> authorize()`);
                 if (!credentials?.number || !credentials?.password) {
                     console.log(`Email or Password are not sent`);
                     throw new Error("Email and password are required");
@@ -114,6 +115,7 @@ export const authOptions:NextAuthConfig = {
     callbacks: {
         // TODO: can u fix the type here? Using any is bad
         jwt({ token, user }) {
+            console.log(`Inside /lib/auth.ts -> callbacks/jwt()`);
             if (user) {
                 // token.email = user.email;
                 user.email = user.email ?? undefined;
@@ -129,6 +131,7 @@ export const authOptions:NextAuthConfig = {
         }) {
             // console.log("token");
             // console.log(token);
+            console.log(`Inside /lib/auth.ts -> callbacks/session()`);
             if (session.user) {
                 session.user.id = token.sub || "";
             }

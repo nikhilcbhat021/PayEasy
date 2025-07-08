@@ -23,7 +23,8 @@ export default async function signin(formData:FormData):Promise<signinReturn> {
         err: ''
     }
     
-
+    console.log(`Inside lib/auth/signin.ts`);
+    console.dir(formData);
     try {
         // const userFound = signIn("credentials", );
         const userFound = await signIn("credentials", {
