@@ -25,12 +25,16 @@ export default function SigninClient() {
                 setDisableSubmit(true);
                 const formData = new FormData(e.currentTarget);
                 console.log("signin")
+                console.log(e.target);
+                console.log(e.currentTarget);
+                for (const [key, value] of formData.entries()) {
+                    console.log(key, value);
+                }
                 // do input type checks (ZOD).
                 // check if number is already present in db.
                 // if not, then register, maybe start the account with base money?
                 const phone = formData.get('phone') as string;
                 const password = formData.get('password') as string;
-
 
                 try {
 
