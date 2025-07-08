@@ -48,6 +48,7 @@ export default async function signin(formData:FormData):Promise<signinReturn> {
     } catch(e) {
         console.log("Error on server");
         console.log((e as Error).message);
+        console.log(e);
 
         if (e instanceof AuthError) {
             switch (e.type) {

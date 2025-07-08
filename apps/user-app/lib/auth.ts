@@ -23,16 +23,18 @@ export const authOptions:NextAuthConfig = {
             async authorize(credentials: Partial<Record<"number" | "password", unknown>>) {
                 // Do zod validation, OTP validation here
                 if (!credentials?.number || !credentials?.password) {
+                    console.log(`Email or Password are not sent`);
                     throw new Error("Email and password are required");
                 }
                 // const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
                 // console.log(hashedPassword);
+
                 const existingUser = await db.prismaClient.user.findFirst({
                     where: {
                         number: credentials.number
                     }
                 });
-
+                console.log(`ExistingUser - ${existingUser}`);
                 if (existingUser) {
                     const passwordValidation = await bcrypt.compare(credentials.password as string, existingUser.password);
                     if (passwordValidation) {
@@ -46,6 +48,7 @@ export const authOptions:NextAuthConfig = {
                     }
                     // console.log("----------- NULL -----------");
                 }
+                console.log(`User doesn't exist`);
                 return null;
                 // } else {
                 //     const createdUser = await db.prismaClient.user.create({
