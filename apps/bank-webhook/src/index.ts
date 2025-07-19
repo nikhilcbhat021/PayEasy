@@ -4,7 +4,18 @@ import cors from 'cors';
 
 const app = express();
 app.use(json());
-app.use(cors());
+// app.use(cors());
+app.use(cors({
+  origin: [
+    process.env.NEXT_PUBLIC_DUMMY_BANKS_URL||"https://dummy-banks.sputnikhil.top/",
+    "http://localhost:3001",
+    "http://localhost:8082",
+  ],
+  credentials: true,
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  optionsSuccessStatus: 200
+})); 
 
 // Responsible for marking the txn from Processing to Failed/Success.
 // Also, add the txn to OnRampTransactions table.
@@ -139,6 +150,6 @@ app.post('/bankwebhook', async (req, res) => {
 
 })
 
-app.listen(process.env.WEB_HOOK_PORT, () => {console.log(`Listening at ${process.env.WEB_HOOK_PORT}`)});
+app.listen(8081, () => {console.log(`Listening at ${process.env.NEXT_PUBLIC_WEB_HOOK_PORT}`)});
 // app.listen(process.env.WEB_HOOK_PORT, () => {console.log(`Listening at ${process.env.WEB_HOOK_PORT}, db = ${process.env.DATABASE_URL}`)});
 // app.listen(process.env.WEB_HOOK_PORT);
