@@ -24,7 +24,10 @@ const Sidebar = ({ sidebarChildren }: {
     //     return <></>
 
     return (
-        <div className='text-sm w-full flex pt-16'>
+        <div 
+            className='sticky top-15 left-0 text-sm w-full flex pt-16'
+            // className='sticky top-15 text-sm w-full flex pt-16'
+        >
             <ul className='px-2 md:px-4 w-full
                     *:hover:bg-stone-300 *:hover:rounded md:*:active:bg-stone-400 *:hover:cursor-pointer
                 '>

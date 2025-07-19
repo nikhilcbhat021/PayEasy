@@ -21,7 +21,7 @@ const Appbar = ({ user, onSignin, onSignout, authenticated }: UserType) => {
     console.log(authenticated);
 
     return (
-        <div className='w-full border-b-1 border-stone-400 flex justify-between items-center px-4 py-2 text-lime-400 text-center'>
+        <div className='max-h-15 w-full border-b-1 border-stone-400 flex justify-between items-center px-4 py-2 text-lime-400 text-center'>
             <Link href={'/'}><Logo /></Link>
             <Button onClick={authenticated !== true ? onSignin : onSignout}
                 className='p-2 bg-indigo-900 text-md cursor-pointer border-indigo-900 border-2 rounded-lg hover:border-white text-white'

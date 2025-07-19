@@ -13,9 +13,9 @@ export default async function Layout ({children}: Readonly<{children: ReactNode}
     if (!session?.user)
         redirect('/');
 
-    return <main className="h-full flex ">
+    return <main className="h-full flex">
         <SidebarClient />
-        <div className="flex-1 h-full p-8 ">
+        <div className="flex-1 h-full min-h-screen p-8 border-l-1 border-stone-400">
             {children}
         </div>
     </main>

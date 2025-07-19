@@ -27,7 +27,10 @@ const AppbarClient = ({user_prop}: {user_prop: User|undefined}) => {
     }
 
     return (
-        <div className='w-full'>
+        <div 
+            // className='w-full'
+            className='w-full sticky top-0 z-10 bg-[#e7e5e4]'
+        >
             <Appbar onSignin={signin_cb} onSignout={signout_cb} user={user_prop || {}} authenticated={user_prop !== undefined} />
         </div>
     )

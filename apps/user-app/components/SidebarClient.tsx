@@ -38,7 +38,8 @@ const sidebar_buttons:Array<SidebarElement> = [
 
 const SidebarClient = () => {
 
-    return <nav className="w-fit md:w-1/4 lg:w-1/5 border-r-1 border-stone-400">
+    return <nav className="sticky top-15 left-0 w-fit md:w-1/4 lg:w-1/5"
+    >
         <Sidebar sidebarChildren={sidebar_buttons}/>
     </nav>
 

@@ -29,7 +29,7 @@ export default async function RootLayout({
 
     return (
         <html lang="en" className="">
-            <body className={`${geistSans.variable} ${geistMono.variable} h-dvh`}>
+            <body className={`${geistSans.variable} ${geistMono.variable} h-full`}>
                 <Providers>
                     <AppbarClient user_prop={session?.user||undefined}/>
                     {children}

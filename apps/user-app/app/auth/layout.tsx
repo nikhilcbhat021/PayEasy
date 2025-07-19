@@ -8,7 +8,7 @@ export default async function Layout({children}: {children: ReactNode}) {
     if (session?.user)
         redirect('/');
 
-    return <main className="w-full h-full flex items-center justify-center ">
+    return <main className="w-full min-h-screen h-full flex items-center justify-center ">
         {children}
     </main>
 }
