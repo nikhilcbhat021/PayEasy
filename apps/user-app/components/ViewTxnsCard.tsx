@@ -1,29 +1,17 @@
+'use client'
+
 import { OnRampTransaction, OnRampTransactionStatus, P2pTransaction, Prisma } from ".prisma/client";
 import { auth } from "@/lib/auth";
 import { Transaction } from "@/lib/types";
 import { Card } from "@repo/ui/card";
-import { redirect } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { Incoming, Outgoing } from "./Icons";
+import { usePagination } from "./Pagination";
+import { useSession } from "next-auth/react";
+import { useEffect } from "react";
 
 
-const getAllTxns = async () => {
-    'use server';
-    console.log('returning txns');
-    // we are passing allTxn in props.
-}
-
-const changePage = async (page:number) => {
-    'use server';
-    const maxPages = 100;
-
-    console.log('returning txns');
-    if (page === 0)
-        return 0;
-    if (page === maxPages)
-        return page;
-}
-
-export const ViewTxnsCard = async ({ 
+export const ViewTxnsCard = ({ 
     allTransactions,
     showIcons=false,
  }: { 
@@ -31,11 +19,22 @@ export const ViewTxnsCard = async ({
     showIcons?:boolean
 }) => {
 
-    const session = await auth();
+    // const session = await auth();
 
-    if (!session?.user) {
-        redirect('/home');
-    }
+    // if (!session?.user) {
+    //     redirect('/home');
+    // }
+
+    const session = useSession();
+    // const router = useRouter();
+    // alert(session.status);
+    // useEffect(() => {
+    //     if (session.status !== "authenticated") {
+    //         router.push('/home')
+    //     }
+    // }, [])
+
+    const { pagedItems, PaginationControl } = usePagination({items: allTransactions})
 
 
     const txnStatusColor = {
@@ -53,17 +52,18 @@ export const ViewTxnsCard = async ({
             </Card>
         </div>
     }
+
     return (
         <div className="w-full flex gap-2 flex-col items-center">
             <Card label="Recent Transactions" >
                 <div className="flex flex-col items-stretch justify-start divide-y divide-stone-300">
                 {
-                    allTransactions.map((txn:Transaction) => 
+                    pagedItems.map((txn:Transaction) => 
                         <div key={txn.id} className="flex justify-between items-center gap-1 p-2 text-sm">
                             {/* Txn has date, state, amount, sent/received */}
                             <div className="flex justify-start items-center gap-4">
                                 {showIcons && <div className="object-contain inline-block">
-                                    {'fromId' in txn && txn.fromId === session.user.id ? <Outgoing/> : <Incoming/>}
+                                    {'fromId' in txn && txn.fromId === session.data?.user.id ? <Outgoing/> : <Incoming/>}
                                     {/* {'toId' in txn &&  <div>{txn.toId as string}</div>} */}
                                 </div>}
                                 {showIcons && 
@@ -78,7 +78,7 @@ export const ViewTxnsCard = async ({
                                 </div>
                             </div>
                             {showIcons && <div>
-                                {'fromId' in txn && txn.fromId === session.user.id ? '-' : '+'}
+                                {'fromId' in txn && txn.fromId === session.data?.user.id ? '-' : '+'}
                                 {!showIcons && '+'}{' '}Rs.{Number(txn.amount)/100}
                             </div>}
                             {!showIcons && <div className="inline-block">+{' '}Rs.{Number(txn.amount)/100}</div>}
@@ -86,6 +86,7 @@ export const ViewTxnsCard = async ({
                     )
                 }
                 </div>
+                <PaginationControl />
                 {/* <Pagination data={allTransactions} currPage={page} pageChange={changePage} /> */}
             </Card >
         </div>

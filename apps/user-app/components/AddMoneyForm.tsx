@@ -8,7 +8,7 @@ import { Select } from '@repo/ui/select'
 import { redirect } from 'next/navigation';
 import { useRouter } from 'next/navigation';
 import startOnRampTxn from '@/lib/actions/startWalletTopup';
-import { FormEvent } from 'react';
+import { FormEvent, useState } from 'react';
 
 
 // Ideally this should come from database...
@@ -31,39 +31,47 @@ const SUPPORTED_BANKS:Array<BankInfoType> = [{
 export const AddMoneyForm = () => {
 
     const router = useRouter();
+    const [disableInteraction, setDisableInteraction] = useState(false);
 
     const addMoneyAction = async (e:FormEvent<HTMLFormElement>) => {
         // 'use server';
-        e.preventDefault();
+        try {
+            setDisableInteraction(true);
+            e.preventDefault();
 
-        const formData = new FormData(e.currentTarget);
+            const formData = new FormData(e.currentTarget);
 
-        console.log('---------------------------')
-        console.log('Inside Add Money action');
-        console.log(formData.get('bank'));
-        console.log(formData.get('amount'));
-        console.log('---------------------------')
+            console.log('---------------------------')
+            console.log('Inside Add Money action');
+            console.log(formData.get('bank'));
+            console.log(formData.get('amount'));
+            console.log('---------------------------')
 
-        const bankInfo = SUPPORTED_BANKS.find(bank => bank.link === formData.get('bank'));
-        console.log(bankInfo)
-        const amount = formData.get('amount');
-        // redirecting as per the architecture, to the specified dummy-bank URL.
-        if (!bankInfo) {
-            throw new Error('Selected bank is not supported.');
+            const bankInfo = SUPPORTED_BANKS.find(bank => bank.link === formData.get('bank'));
+            console.log(bankInfo)
+            const amount = formData.get('amount');
+            // redirecting as per the architecture, to the specified dummy-bank URL.
+            if (!bankInfo) {
+                throw new Error('Selected bank is not supported.');
+            }
+            if (!amount) {
+                throw new Error('Incorrect Amount entered');
+            }
+
+            const result = await startOnRampTxn(bankInfo, Number(amount)*100);
+            console.log(process.env.NEXT_PUBLIC_WEBHOOK_URL);
+            if (result && result.token !== '-1') {
+                // redirect(formData.get('bank') as string, );
+                router.refresh();
+                window.open(`${formData.get('bank') as string}?token=${result.token}&amount=${Number(amount)*100}&webhook_url=${process.env.NEXT_PUBLIC_WEBHOOK_URL||'http://localhost:8081/bankwebhook'}`, '_blank')
+            } else
+                router.push('/500');
+        } catch (error) {
+            console.log(error);
+            alert('Something went wrong...');
+        } finally {
+            setDisableInteraction(false);
         }
-        if (!amount) {
-            throw new Error('Incorrect Amount entered');
-        }
-
-        const result = await startOnRampTxn(bankInfo, Number(amount)*100);
-        console.log(process.env.NEXT_PUBLIC_WEBHOOK_URL);
-        if (result && result.token !== '-1') {
-            // redirect(formData.get('bank') as string, );
-            router.refresh();
-            window.open(`${formData.get('bank') as string}?token=${result.token}&amount=${Number(amount)*100}&webhook_url=${process.env.NEXT_PUBLIC_WEBHOOK_URL||'http://localhost:8081/bankwebhook'}`, '_blank')
-        } else
-            router.push('/500');
-
     }
 
 
@@ -89,7 +97,7 @@ export const AddMoneyForm = () => {
                     <div>
                         <Select options={bankSelectOptions} name="bank" id="bank" label='Bank'/>
                     </div>
-                    <Button className='self-center' type='submit'>Add Money</Button>
+                    <Button disabled={disableInteraction} className='self-center' type='submit'>Add Money</Button>
                 </form>
             </Card>
         </div>

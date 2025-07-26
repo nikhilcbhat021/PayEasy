@@ -5,6 +5,7 @@ import { auth } from '@/lib/auth';
 import { Session } from 'next-auth';
 import * as db from '@repo/db/index.ts';
 import { getAllTransactions } from '@/lib/actions/transactions';
+import { redirect } from 'next/navigation';
 
 const getBalance = async (session: Session | null) => {
 
@@ -47,6 +48,11 @@ const getBalance = async (session: Session | null) => {
 const Topup = async () => {
 
     const session = await auth();
+    
+    if(!session?.user) {
+        redirect('/')
+    }
+
     const balance = await getBalance(session);
     const txns = await getAllTransactions(true);    //onramp = true
 
